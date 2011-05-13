@@ -1,17 +1,12 @@
-import es.osoco.grails.plugins.concordion.ConcordionGrailsTestType
 import org.codehaus.groovy.grails.test.support.GrailsTestMode
 
+concordionTests = []
 
 eventAllTestsStart = {
     phasesToRun << "concordion"
-    tryToLoadConcordionTestType()
 }
 
-def mode = new GrailsTestMode(autowire: true)
-def concordionTestType = new ConcordionGrailsTestType('concordion', 'concordion', mode)
-concordionTests = [ concordionTestType ]
-
-eventPackagePluginsStart = { pluginName ->
+eventPackagePluginsEnd = {
     tryToLoadConcordionTestType()
 }
 
@@ -19,7 +14,7 @@ tryToLoadConcordionTestType = {
     def testMode = new GrailsTestMode(autowire: true)
     tryToLoadTestType(
         'concordion', 
-        'cocordion', 
+        'concordion', 
         'es.osoco.grails.plugins.concordion.ConcordionGrailsTestType',
         testMode)
 }
