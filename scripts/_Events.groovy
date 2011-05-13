@@ -1,5 +1,10 @@
 import org.codehaus.groovy.grails.test.support.GrailsTestMode
 
+final String CONCORDION_OUTPUT_PROPERTY = "concordion.output.dir"
+final String CONCORDION_EXTENSIONS_PROPERTY = "concordion.extensions"
+final String DEFAULT_CONCORDION_REPORTS_DIR = "concordion"
+final String DEFAULT_CONCORDION_EXTENSIONS = "org.concordion.ext.Extensions"
+
 concordionTests = []
 
 eventAllTestsStart = {
@@ -8,6 +13,15 @@ eventAllTestsStart = {
 
 eventPackagePluginsEnd = {
     tryToLoadConcordionTestType()
+}
+
+concordionTestPhasePreparation = {
+    setupConcordion()
+    functionalTestPhasePreparation()
+}
+
+concordionTestPhaseCleanUp = {
+    functionalTestPhaseCleanUp()
 }
 
 tryToLoadConcordionTestType = {
@@ -34,9 +48,28 @@ softLoadClass = { className ->
     }
 }
 
-concordionTestPhasePreparation = {
-    functionalTestPhasePreparation()
+setupConcordion = {
+    setupDefaultConcordionProperties()
 }
-concordionTestPhaseCleanUp = {
-    functionalTestPhaseCleanUp()
+
+setupDefaultConcordionProperties = {    
+    defaultValues = 
+        [(CONCORDION_OUTPUT_PROPERTY): defaultConcordionOutput(),
+         (CONCORDION_EXTENSIONS_PROPERTY): DEFAULT_CONCORDION_EXTENSIONS]
+    defaultValues.each {
+        propertyName, defaultValue ->
+        setSystemPropertyIfNotExist(propertyName, defaultValue)
+    }
 }
+
+defaultConcordionOutput = {
+    "${testReportsDir}/${DEFAULT_CONCORDION_REPORTS_DIR}".toString()
+}
+
+setSystemPropertyIfNotExist = {
+    property, value ->
+    if (!System.getProperty(property)) {
+        System.setProperty(property, value)
+    }
+}
+
