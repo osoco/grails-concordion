@@ -52,10 +52,10 @@ setupConcordion = {
     setupDefaultConcordionProperties()
 }
 
-setupDefaultConcordionProperties = {    
+setupDefaultConcordionProperties = {
     defaultValues = 
         [(CONCORDION_OUTPUT_PROPERTY): defaultConcordionOutput(),
-         (CONCORDION_EXTENSIONS_PROPERTY): DEFAULT_CONCORDION_EXTENSIONS]
+         (CONCORDION_EXTENSIONS_PROPERTY): defaultConcordionExtensions()]
     defaultValues.each {
         propertyName, defaultValue ->
         setSystemPropertyIfNotExist(propertyName, defaultValue)
@@ -66,8 +66,16 @@ defaultConcordionOutput = {
     "${testReportsDir}/${DEFAULT_CONCORDION_REPORTS_DIR}".toString()
 }
 
+defaultConcordionExtensions = {
+    def extensionClassesNames = buildConfig.concordion.extensions
+    def extensions = extensionClassesNames.isEmpty() ?
+        DEFAULT_CONCORDION_EXTENSIONS : 
+        extensionClassesNames.join(',')
+}
+
 setSystemPropertyIfNotExist = {
     property, value ->
+    println "${property} -> ${value}"
     if (!System.getProperty(property)) {
         System.setProperty(property, value)
     }
