@@ -25,6 +25,8 @@ package es.osoco.grails.plugins.concordion
 
 import es.osoco.grails.plugins.concordion.runner.ConcordionGrailsRunnerBuilder
 
+import org.codehaus.groovy.grails.plugins.GrailsPluginUtils
+
 import org.codehaus.groovy.grails.test.junit4.JUnit4GrailsTestType
 import org.codehaus.groovy.grails.test.junit4.listener.SuiteRunListener
 import org.codehaus.groovy.grails.test.junit4.result.JUnit4ResultGrailsTestTypeResultAdapter
@@ -48,6 +50,8 @@ import java.lang.reflect.Modifier
  */
 class ConcordionGrailsTestType extends JUnit4GrailsTestType {
 
+    private ClassLoader testClassLoader
+
     ConcordionGrailsTestType(String name, String sourceDirectory) {
         super(name, sourceDirectory)
     }
@@ -65,5 +69,22 @@ class ConcordionGrailsTestType extends JUnit4GrailsTestType {
             new ConcordionGrailsRunnerBuilder(testTargetPatterns)
         }
     }
+
+    @Override
+    protected ClassLoader getTestClassLoader() {
+        if (!testClassLoader) {
+            def classPathAdditions = [getSourceDir()]
+            if (compiledClassesDir) {
+                classPathAdditions << compiledClassesDir
+            }
+            classPathAdditions << buildBinding.pluginClassesDir
+            println "classPathAdditions: ${classPathAdditions}"
+            testClassLoader = new URLClassLoader(classPathAdditions*.toURI()*.toURL() as URL[], buildBinding.classLoader)
+            println "classLoader URLs: ${testClassLoader.URLs}"
+            println "parent classLoader URLs: ${buildBinding.classLoader.URLs}"
+        }
+        testClassLoader
+    }
+
 
 }

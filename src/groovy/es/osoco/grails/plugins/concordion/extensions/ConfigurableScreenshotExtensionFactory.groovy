@@ -25,11 +25,10 @@ package es.osoco.grails.plugins.concordion.extensions
 
 import java.awt.Robot
 
-import org.concordion.api.extension.ConcordionExtension;
+import org.concordion.api.extension.ConcordionExtension
 import org.concordion.api.extension.ConcordionExtensionFactory
 import org.concordion.ext.ScreenshotExtension
-
-import org.openqa.selenium.WebDriver
+import org.concordion.ext.ScreenshotTaker;
 
 
 /**
@@ -39,28 +38,101 @@ import org.openqa.selenium.WebDriver
  *
  * By default, this factory creates an extension that will add screenshots to the output 
  * whenever an assertion fails, or an uncaught Throwable occurs in the test.
+ *
+ * @author Rafael Luque
  */
-public class ConfigurableScreenshotExtensionFactory implements ConcordionExtensionFactory {
+public class ConfigurableScreenshotExtensionFactory extends ConfigurableExtensionFactory {
 
 
-    private static WebDriver driver;
+    private static final String CONFIGURATION_BLOCK_NAME = "screenshotExtensionFactoryConfiguration"
 
 
-    public static void setDriver(WebDriver driver) {
-        this.driver = driver
+    private static Closure extensionConfig
+
+
+    private boolean screenshotOnAssertionFailure
+    private boolean screenshotOnAssertionSuccess
+    private boolean screenshotOnThrowable
+    private int maxWidth
+    private ScreenshotTaker screenshotTaker
+
+
+    public static String getConfigurationBlockName() {
+        CONFIGURATION_BLOCK_NAME
+    }
+
+    public static void setExtensionConfig(Closure extensionConfig) {
+        this.extensionConfig = extensionConfig
     }
 
 
     @Override
-    public ConcordionExtension createExtension() {
-        ScreenshotExtension extension = new ScreenshotExtension()
-        extension.setMaxWidth(400)
-        extension.setScreenshotOnAssertionFailure()
-        extension.setScreenshotOnAssertionSuccess()
-        extension.setScreenshotOnThrowable()
-        extension.setScreenshotTaker(screenshotTaker)            
+    public ConcordionExtension build() {
+        def extension = new ScreenshotExtension()
+        [ 'screenshotOnAssertionFailure',
+          'screenshotOnAssertionSuccess',
+          'screenshotOnThrowable',
+          'maxWidth',
+          'screenshotTaker' ].each {
+
+            property ->
+            if (this."$property") {
+                extension."$property" = this."$property"
+            }
+
+        }
         extension
     }
 
+
+    /** 
+     * Sets whether screenshots will be embedded in the output when assertions fail. 
+     * Defaults to <b><code>true</code></b>.
+     * 
+     * @param takeShot <code>true</code> to take screenshots on assertion failures, 
+     * <code>false</code> to not take screenshots.
+     */
+    public void screenshotOnAssertionFailure(boolean takeShot) {
+        screenshotOnAssertionFailure = takeShot
+    }
+
+    /** 
+     * Sets whether screenshots will be embedded in the output when assertions pass. 
+     * Defaults to <b><code>false</code></b>.
+     *
+     * @param takeShot <code>true</code> to take screenshots on assertion success, 
+     * <code>false</code> to not take screenshots.
+     */
+    public void screenshotOnAssertionSuccess(boolean takeShot) {
+        screenshotOnAssertionSuccess = takeShot
+    }
+
+    /** 
+     * Sets whether screenshots will be embedded in the output when uncaught Throwables occur in the test. 
+     * Defaults to <b><code>true</code></b>.
+     *
+     * @param takeShot <code>true</code> to take screenshots on uncaught Throwables, 
+     * <code>false</code> to not take screenshots.
+     */
+    public void screenshotOnThrowable(boolean takeShot) {
+        screenshotOnThrowable = takeShot
+    }
+
+    /**
+     * Sets the maximum width that will be used for display of the images in the output.
+     */
+    public void maxWidth(int maxWidth) {
+        this.maxWidth = maxWidth
+    }
+
+    /**
+     * Set a custom screenshot taker. If not set, the extension will default to using {@link Robot}
+     * which will take a shot of the full visible screen.
+     * 
+     * @param screenshotTaker
+     */
+    public void screenshotTaker(ScreenshotTaker screenshotTaker) {
+        this.screenshotTaker = screenshotTaker
+    }
 
 }
