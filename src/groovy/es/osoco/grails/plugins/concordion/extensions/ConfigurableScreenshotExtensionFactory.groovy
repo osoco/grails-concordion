@@ -23,12 +23,15 @@
 package es.osoco.grails.plugins.concordion.extensions
 
 
-import java.awt.Robot
-
 import org.concordion.api.extension.ConcordionExtension
 import org.concordion.api.extension.ConcordionExtensionFactory
+
 import org.concordion.ext.ScreenshotExtension
-import org.concordion.ext.ScreenshotTaker;
+import org.concordion.ext.ScreenshotTaker
+
+import org.concordion.ext.selenium.SeleniumScreenshotTaker
+
+import org.openqa.selenium.WebDriver
 
 
 /**
@@ -48,6 +51,7 @@ public class ConfigurableScreenshotExtensionFactory extends ConfigurableExtensio
 
 
     private static Closure extensionConfig
+    private static WebDriver webDriver
 
 
     private boolean screenshotOnAssertionFailure
@@ -66,6 +70,11 @@ public class ConfigurableScreenshotExtensionFactory extends ConfigurableExtensio
     }
 
 
+    public static void setWebDriver(WebDriver webDriver) {
+        this.webDriver = webDriver
+    }
+
+
     @Override
     public ConcordionExtension build() {
         def extension = new ScreenshotExtension()
@@ -81,6 +90,9 @@ public class ConfigurableScreenshotExtensionFactory extends ConfigurableExtensio
             }
 
         }
+	if (webDriver) {
+	    extension.screenshotTaker = new SeleniumScreenshotTaker(webDriver)
+	}
         extension
     }
 
