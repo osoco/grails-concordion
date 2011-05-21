@@ -9,23 +9,10 @@
  */
 class @artifact.name@ {
 
-    def split(String fullName) {
-	def result
-	if (fullName) {
-	    def words = fullName.split(/\s/)
-	    result = new Result(words[0], words[1])
-	}
-	result
-    }
-
-    public class Result {
-	def firstName
-	def lastName
-	
-	public Result(firstName, lastName) {
-	    this.firstName = firstName
-	    this.lastName = lastName
-	}
+    String greetingFor(String userName) {
+	userName == 'Count Tyrone Rugen' ?
+	    'Hello. My name is Inigo Montoya. You killed my father. Prepare to die.' :
+	    "Hello ${userName}!"
     }
 
 }
