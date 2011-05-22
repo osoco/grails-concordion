@@ -39,10 +39,13 @@ target(main: "Creates a skeleton of a general-purpose Concordion test with the g
 
     promptForName(type: "Concordion Test")
     def name = argsMap["params"][0]
+    def web = argsMap["web"]
     def superClass = argsMap["superClass"]
     def artifactPath = "test/concordion"
-    createArtifact(name: name, suffix: "Test", type: "ConcordionTest", path: artifactPath, superClass: superClass)
-    createArtifact(name: name, suffix: "", type: "ConcordionSpec", path: artifactPath)
+    def testArtifactType = web ? "ConcordionWebTest" : "ConcordionTest"
+    def specArtifactType = web ? "ConcordionWebSpec" : "ConcordionSpec"
+    createArtifact(name: name, suffix: "Test", type: testArtifactType, path: artifactPath, superClass: superClass)
+    createArtifact(name: name, suffix: "", type: specArtifactType, path: artifactPath)
     def pkg = null
     def pos = name.lastIndexOf('.')
     if (pos != -1) {
