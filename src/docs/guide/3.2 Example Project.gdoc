@@ -1,0 +1,4 @@
+We have created an example project based on the Grails Pomodoro application to test the plugin and
+provide examples of web-based acceptance tests for a little Grails application. 
+
+The example project @grails-pomodoro-concordion@ is not bundled in the plugin itself, but you can found it on [OSOCO's GitHub|http://github.com/osoco/grails-pomodoro-concordion].

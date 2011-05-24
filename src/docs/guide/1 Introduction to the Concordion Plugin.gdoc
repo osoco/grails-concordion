@@ -1,0 +1,7 @@
+The Concordion plugin provides a convenient integration between the Concordion framework, 
+an open source tool for writing automated acceptance tests in Java, and Grails applications.
+
+This guide documents the installation and usage of the plugin and provides the first steps to
+easyly starting to write and run active specifications for your Grails applications using Concordion.
+
+

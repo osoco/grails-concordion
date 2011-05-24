@@ -1,0 +1,30 @@
+The plugin provides the following features:
+
+h4. New test phase/type for Concordion tests.
+
+h4. A JUnit4 specific runner for Concordion.
+
+h4. Concordion extensions can be configured globally through the application's @BuildConfig.groovy@.
+
+h4. Creation scripts.
+
+Once you have installed the plugin you will have the new command 
+@create-concordion-test@ available in your project.
+
+This command allows you easily create a new sample specification (and its companion fixture test):
+
+{code}
+grails create-concordion-test <package.SpecificationName>
+{code}
+
+This will create a Concordion-based specification in the @test/concordion@ directory, which you can
+use as an starting point template to modify and build your own tests. As result of this command, if
+you inspect the @test/concordion/<package>@ directory you will find the following two files:
+
+* @<SpecificationName>.html@: an HTML file containing the own specification.
+* @<SpecificationName>Test.groovy@: the fixture test Groovy class.
+
+Obviously, you can always write your specifications from scratch or copy them from a previous one 
+and modify them, so this command is only a help.
+
+

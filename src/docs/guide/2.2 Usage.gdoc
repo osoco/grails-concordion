@@ -1,0 +1,31 @@
+
+h4. Create specifications
+
+The first step will be to create some specifications (or acceptance tests) in the @test/concordion@
+directory. You can create them manually or create a template using the @create-concordion-test@ script.
+For instance, you can execute the command:
+
+{code}
+grails create-concordion-test org.example.SimpleSpec
+{code}
+
+This will generate a very simple template for an acceptance test, consisting on the specification file 
+@SimpleSpec.html@ and a fixture class @SimpleSpecTest.groovy@. Both files will be generated under the
+@test/concordion/org/example@ directory that the command will create if it does not exist.
+
+h4. Run specifications
+
+Once you have one or more Concordion specs, you can run them using the new phase test concordion in
+the following way:
+
+{code}
+grails test-app concordion:
+{code}
+
+Running this command will start up the Grails application (this way your specifications can test the
+web interface), launch all the Concordion specifications and return the results.
+
+By default all tests are executed, but you can specify the names of the tests (without the "Tests" or other test type suffix) as argument to the command.
+
+Beside the usual test reports generated at @target/test-reports/TESTS-TestSuites.xml@, @target/test-reports/plain@ and @target/test-reports/html@, the Concordion tests will generate highly readable reports located
+at @target/test-reports/concordion@.

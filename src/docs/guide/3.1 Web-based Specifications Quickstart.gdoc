@@ -1,0 +1,98 @@
+This is a quickstart to use the Concordion plugin to write specifications that test the web behaviour of 
+a Grails application using Geb.
+
+h4. Create a sample Grails project
+
+{code}
+grails create-app concordion-quickstart
+{code}
+
+h4. Install the Concordion plugin
+
+{code}
+grails install-plugin concordion
+{code}
+
+h4. Create an specification template
+
+Execute the @create-concordion-test@ command with the @geb@ argument:
+
+{code}
+grails create-concordion-test -geb es.osoco.concordion.quickstart.Hello
+{code}
+
+Running this will create a Geb-based specification we can use as starting point in
+the @test/concordion/es/osoco/concordion/quickstart@ directory.
+
+h4. Create the specification
+
+Change the previous sample specification (@Hello.html@) to adapt it to the actual requirements.
+
+Suppose that out imaginary client has requested us an application that reply with a greeting message 
+that includes the user's name that is sent as a request parameter. We can translate this requirement
+to the following Concordion specification:
+
+{code}
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:ext="urn:concordion-extensions:2010">
+<head>
+    <title>Hello Specification</title>
+</head>
+<body>
+
+    <h1>Hello Specification</h1>
+
+    <h2>Greeting message</h2>
+
+    <p>
+      The application's  URL <pre>/hello</pre> should response with a greeting message with the
+      following form: "Hi <username>!" inside an H1 header element, where username is the value 
+      of the <pre>name</pre> parameter passed.
+    <p>
+    <p>
+      When the name parameter is missing, the application should respond with a simple "Hi!".
+    </p>
+
+    <div class="example">
+      <h3>name parameter example</h3>
+      <p>
+        Given the <pre>/hello</pre> page is requested
+        then the resulting page shows an H1 header with the message "Hi Groovy!"
+        when the <pre>name</pre> parameter passed is "Groovy".
+      </p>
+    </div>
+
+    <div class="example">
+      <h3>Missing name parameter example</h3>
+      <p>
+        Given the <pre>/hello</pre> page is requested
+        then the resulting page shows an H1 header with the message "Hi!"
+        when the <pre>name</pre> parameter is not passed.
+      </p>
+    </div>
+
+</body>
+</html>
+{code}
+
+h4. Creates a sample Controller to test
+
+{code}
+grails create-controller es.osoco.concordion.quickstart.HelloController
+{code}
+
+Edit the controller the following way:
+
+{code}
+package es.osoco.concordion.quickstart
+
+class HelloController {
+
+    def index = { render "<h1>Hi ${params.name ?: ''}!</h1>" }
+}
+{code}
+
+
+h4. Code a Geb-based fixture for the specification
+
+h4. Run the tests
+
