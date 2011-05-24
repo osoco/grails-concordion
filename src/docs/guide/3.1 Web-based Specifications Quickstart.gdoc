@@ -1,19 +1,19 @@
 This is a quickstart to use the Concordion plugin to write specifications that test the web behaviour of 
 a Grails application using Geb.
 
-h4. Create a sample Grails project
+h4. Step 1: Create a sample Grails project
 
 {code}
 grails create-app concordion-quickstart
 {code}
 
-h4. Install the Concordion plugin
+h4. Step 2: Install the Concordion plugin
 
 {code}
 grails install-plugin concordion
 {code}
 
-h4. Create an specification template
+h4. Step 3: Create an specification template
 
 Execute the @create-concordion-test@ command with the @geb@ argument:
 
@@ -24,7 +24,7 @@ grails create-concordion-test -geb es.osoco.concordion.quickstart.Hello
 Running this will create a Geb-based specification we can use as starting point in
 the @test/concordion/es/osoco/concordion/quickstart@ directory.
 
-h4. Create the specification
+h4. Step 4: Create the specification
 
 Change the previous sample specification (@Hello.html@) to adapt it to the actual requirements.
 
@@ -45,9 +45,10 @@ to the following Concordion specification:
 
     <p>
       The application's  URL <pre>/hello</pre> should response with a greeting message with the
-      following form: "Hi <username>!" inside an H1 header element, where username is the value 
+      following form: "Hi [name]!" inside an H1 header element, where username is the value 
       of the <pre>name</pre> parameter passed.
-    <p>
+    </p>
+
     <p>
       When the name parameter is missing, the application should respond with a simple "Hi!".
     </p>
@@ -74,7 +75,116 @@ to the following Concordion specification:
 </html>
 {code}
 
-h4. Creates a sample Controller to test
+h4. Step 6: Try to validate the specifications with your client
+
+h4. Step 5: Add instrumentation and fixture to the specification
+
+Now we instrument the previous specification through Concordion specific attributes:
+
+{code}
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:ext="urn:concordion-extensions:2010">
+<head>
+    <title>Hello Specification</title>
+</head>
+<body>
+
+    <h1>Hello Specification</h1>
+
+    <h2>Greeting message</h2>
+
+    <p>
+      The application's  URL <pre>/hello</pre> should response with a greeting message with the
+      following form: "Hi [name]!" inside an H1 header element, where username is the value 
+      of the <pre>name</pre> parameter passed.
+    </p>
+
+    <p>
+      When the name parameter is missing, the application should respond with a simple "Hi!".
+    </p>
+
+    <div class="example">
+      <h3>name parameter example</h3>
+      <p concordion:execute="#h1Message = h1MessageForName(#name)">
+        Given the <pre>/hello</pre> page is requested
+        then the resulting page shows an H1 header with the message 
+        "<span concordion:assertEquals="#h1Message">Hi Groovy!</span>"
+        when the <pre concordion:set="#name">name</pre> parameter passed is "Groovy".
+      </p>
+    </div>
+
+    <div class="example">
+      <h3>Missing name parameter example</h3>
+      <p>
+        Given the <pre>/hello</pre> page is requested
+        then the resulting page shows an H1 header with the message "Hi!"
+        when the <pre>name</pre> parameter is not passed.
+      </p>
+    </div>
+
+</body>
+</html>
+{code}
+
+We need some code (the test fixture) to bridge the previous specification 
+with the system to test.
+
+We create the test class @HelloTest.grovy@ (or edit the resulting from step 3) 
+in the following way:
+
+{code}
+package es.osoco.concordion.quickstart
+
+import geb.Browser
+import geb.Page
+
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.firefox.FirefoxDriver
+
+import org.junit.AfterClass
+import org.junit.BeforeClass
+
+public class HelloTest {
+
+    private static WebDriver webDriver
+
+    @BeforeClass
+    public static void setup() {
+	webDriver = new FirefoxDriver()
+    }
+
+    String h1MessageForName(String name) {
+	def browser = new Browser(webDriver) 
+	browser.to(HelloPage, name: name)
+	browser.message
+    }
+
+    @AfterClass
+    public static void close() {
+	webDriver?.close()
+    }
+
+}
+
+class HelloPage extends Page {
+    
+    static url = "http://localhost:8080/concordion-quickstart/hello"
+    static content = {       
+        message { $("h1").text() }
+    }    
+}
+{code}
+
+This test uses Selenium and Geb classes, so we must declare these dependencies adding the following
+lines to the @BuildConfig.groovy@:
+
+{code}
+    dependencies {
+	test("org.codehaus.geb:geb-core:latest.release")
+	test("org.seleniumhq.selenium:selenium-firefox-driver:2.0a7")
+    }
+{code}
+
+h4. Creates a Controller to pass the specification test
 
 {code}
 grails create-controller es.osoco.concordion.quickstart.HelloController
@@ -91,8 +201,6 @@ class HelloController {
 }
 {code}
 
-
-h4. Code a Geb-based fixture for the specification
 
 h4. Run the tests
 
