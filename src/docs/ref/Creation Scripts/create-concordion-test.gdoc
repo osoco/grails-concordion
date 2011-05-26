@@ -24,7 +24,7 @@ then the script will prompt yoy if you want to overwrite the specification's fil
 
 Usage:
 {code:java}
-grails create-concordion-test [--geb] specificationName
+grails create-concordion-test [-web] specificationName
 {code}
 
 Required arguments:
@@ -33,7 +33,7 @@ Required arguments:
 
 Optional arguments:
 
-* @geb@ - if specified the sample specification generated will be a Geb-based one.
+* @web@ - if specified the sample specification generated will be a Geb-based one.
 
 {note}
 Note that to run Geb-based specifications you have to declared the following test dependencies
