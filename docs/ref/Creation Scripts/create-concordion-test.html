@@ -17,12 +17,12 @@ the following two files:
 based on the Geb framework (a browser automation solution for the Groovy language). 
 You may prefer this option when you want to write specs about your web interfaces.<p class="paragraph"/>If the specification name specified already exists in your project, 
 then the script will prompt yoy if you want to overwrite the specification's files or not.<p class="paragraph"/>Usage:
-<div class="code"><pre>grails create&#45;concordion&#45;test &#91;&#45;&#45;geb&#93; specificationName</pre></div><p class="paragraph"/>Required arguments:
+<div class="code"><pre>grails create&#45;concordion&#45;test &#91;&#45;web&#93; specificationName</pre></div><p class="paragraph"/>Required arguments:
 <ul class="star">
 <li><code>specificationName</code> - The name of the specification to create (you can also specify a package name)</li>
 </ul><p class="paragraph"/>Optional arguments:
 <ul class="star">
-<li><code>geb</code> - if specified the sample specification generated will be a Geb-based one.</li>
+<li><code>web</code> - if specified the sample specification generated will be a Geb-based one.</li>
 </ul><p class="paragraph"/><blockquote class="note">
 Note that to run Geb-based specifications you have to declared the following test dependencies
 in the project's <code>BuildConfig.groovy</code>:
