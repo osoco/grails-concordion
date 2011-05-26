@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <title>2.2 Usage</title>
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
+    </head>
+    <body class="body">
+    
+<h4>Create specifications</h4><p class="paragraph"/>The first step will be to create some specifications (acceptance tests) in the <code>test/concordion</code>
+directory. You can create them manually or create a template using the 
+<a href="../ref/Creation Scripts/create-concordion-test.html" class="Creation Scripts">create-concordion-test</a> script.<p class="paragraph"/>For instance, you can execute the command:<p class="paragraph"/><div class="code"><pre>grails create&#45;concordion&#45;test org.example.SimpleSpec</pre></div><p class="paragraph"/>This will generate a very simple template for an acceptance test, consisting on the specification file 
+<code>SimpleSpec.html</code> and a fixture class <code>SimpleSpecTest.groovy</code>. Both files will be generated under the
+<code>test/concordion/org/example</code> directory that the command will create if it does not exist.<p class="paragraph"/><h4>Run specifications</h4><p class="paragraph"/>Once you have one or more Concordion specs, you can run them using the new phase test concordion in
+the following way:<p class="paragraph"/><div class="code"><pre>grails test&#45;app concordion:</pre></div><p class="paragraph"/>Running this command will start up the Grails application (this way your specifications can test the
+web interface), launch all the Concordion specifications and return the results.<p class="paragraph"/>By default all tests are executed, but you can specify the names of the tests (without the "Tests" or other test type suffix) as argument to the command.<p class="paragraph"/>Beside the usual test reports generated at <code>target/test-reports/TESTS-TestSuites.xml</code>, <code>target/test-reports/plain</code> and <code>target/test-reports/html</code>, the Concordion tests will generate highly readable reports located
+at <code>target/test-reports/concordion</code>.
+
+    </body>
+</html>

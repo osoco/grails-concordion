@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <title>1.1 Features</title>
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
+    </head>
+    <body class="body">
+    This initial version of the plugin provides the following minimal set of features 
+to integrate Concordion-based tests in a Grails application:<p class="paragraph"/><h4>Custom test phase</h4><p class="paragraph"/>The plugin adds a new custom <code>concordion</code> phase type to the already existing in Grails: <code>unit</code>,
+<code>integration</code>, <code>functional</code> and <code>other</code>.<p class="paragraph"/>A Grails phase type controls the state of the application at test time.<p class="paragraph"/>In this initial version, the <code>concordion</code> test phase is equivalent to the <code>functional</code> one, i.e.
+the application will be fully running for the Concordion tests.<p class="paragraph"/><h4>Custom test type</h4><p class="paragraph"/>The plugin also defines a new custom <code>concordion</code> test type that defines the group of tests to
+run and the test running mechanism.<p class="paragraph"/>The <code>concordion</code> test type selects those classes with the
+suffix <code>Test</code> or <code>Tests</code> under the <code>test/concordion</code> directory. As running mechanism this test type
+provides a custom JUnit4 runner resulting from a mixin between the <code>GrailsTestCaseRunner</code> shipped 
+with Grails and the <code>ConcordionRunner</code> from the Concordion framework.<p class="paragraph"/><h4>Mechanism to configure Concordion extensions</h4><p class="paragraph"/>You can declare globally the Concordion extensions to be used trough the 
+Grails application's <code>BuildConfig.groovy</code>. This mechanism is valid both, for your own extensions and for
+those provided by the <a href="http://code.google.com/p/concordion-extensions/" target="blank">concordion-extensions project</a>.<p class="paragraph"/>In the case of concordion-extensions, the plugin provides a <a href="http://github.com/osoco/grails-concordion/blob/master/src/groovy/es/osoco/grails/plugins/concordion/extensions/ConfigurableExtensionFactory.groovy" target="blank">ConfigurableExtensionFactory</a> which implements
+<code>org.concordion.api.extension.ConcordionExtensionFactory</code>, providing a factory mechanism that allow
+to configure those extensions that require customization through a simple DSL in the <code>BuildConfig.groovy</code>.<p class="paragraph"/>The initial version includes configurable implementations for the <code>org.concordion.api.extension.LoggingTooltipExtension</code> and <code>org.concordion.api.extension.ScreenshotExtension</code> extensions.<p class="paragraph"/>You can read about how to configure these extensions in the Configuration section of this guide.<p class="paragraph"/><h4>Creation script</h4><p class="paragraph"/>Once you have installed the plugin you will have the command 
+<a href="../ref/Creation Scripts/create-concordion-test.html" class="Creation Scripts">create-concordion-test</a> available in your project.<p class="paragraph"/>You can always write an specification from scratch or copy it from a previous one 
+and modify it, but this command allows you easily create a new sample specification 
+(and its companion fixture test) by running:<p class="paragraph"/><div class="code"><pre>grails create&#45;concordion&#45;test &#60;<span class="java&#45;keyword">package</span>.SpecificationName&#62;</pre></div><p class="paragraph"/>
+
+    </body>
+</html>

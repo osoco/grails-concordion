@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <title>3 Tutorials</title>
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
+    </head>
+    <body class="body">
+    <h1><a name="3 Tutorials">3 Tutorials</a></h1><h2><a name="3.1 Web-based Specifications Quickstart">3.1 Web-based Specifications Quickstart</a></h2>This quickstart shows how to use the Concordion plugin to write specifications 
+that test the web behaviour of a Grails application using <a href="http://geb.codehaus.org/latest/index.html" target="blank">Geb</a>.<p class="paragraph"/><h4>Step 1: Create a sample Grails project</h4><p class="paragraph"/><div class="code"><pre>grails create&#45;app concordion&#45;quickstart</pre></div><p class="paragraph"/><h4>Step 2: Install the Concordion plugin</h4><p class="paragraph"/><div class="code"><pre>cd concordion&#45;quickstart
+grails install&#45;plugin concordion</pre></div><p class="paragraph"/><h4>Step 3: Create an specification template</h4><p class="paragraph"/>Execute the <code>create-concordion-test</code> command with the <code>geb</code> argument:<p class="paragraph"/><div class="code"><pre>grails create&#45;concordion&#45;test &#45;web es.osoco.concordion.quickstart.Hello</pre></div><p class="paragraph"/>Running this will create in the <code>test/concordion/es/osoco/concordion/quickstart</code> 
+directory a Geb-based specification we can use as starting point, consisting in the
+files <code>Hello.html</code> and <code>HelloTest.groovy</code>.<p class="paragraph"/><h4>Step 4: Create the specification</h4><p class="paragraph"/>Change the previous sample specification (<code>Hello.html</code>) to adapt it to the actual requirements.<p class="paragraph"/>Suppose that out imaginary client has requested us an application that reply with a greeting message 
+that includes the user's name that is sent as a request parameter. We can translate this requirement
+to the following Concordion specification:<p class="paragraph"/><div class="code"><pre>&#60;html xmlns:concordion=<span class="java&#45;quote">"http://www.concordion.org/2007/concordion"</span> xmlns:ext=<span class="java&#45;quote">"urn:concordion&#45;extensions:2010"</span>&#62;
+&#60;head&#62;
+    &#60;title&#62;Hello Specification&#60;/title&#62;
+&#60;/head&#62;
+&#60;body&#62;<p class="paragraph"/>    &#60;h1&#62;Hello Specification&#60;/h1&#62;<p class="paragraph"/>    &#60;h2&#62;Greeting message&#60;/h2&#62;<p class="paragraph"/>    &#60;p&#62;
+      The application's  URL /hello should response with a greeting message with the
+      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span> inside an H1 header element, where username is the value 
+      of the name parameter passed.
+    &#60;/p&#62;<p class="paragraph"/>    &#60;p&#62;
+      When the name parameter is missing, the application should respond with a simple <span class="java&#45;quote">"Hi!"</span>.
+    &#60;/p&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
+      &#60;h3&#62;Existing name example&#60;/h3&#62;
+      &#60;p&#62;
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message <span class="java&#45;quote">"Hi Groovy!"</span>
+        when the name parameter passed is <span class="java&#45;quote">"Groovy"</span>.
+      &#60;/p&#62;
+    &#60;/div&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
+      &#60;h3&#62;Missing name example&#60;/h3&#62;
+      &#60;p&#62;
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message  <span class="java&#45;quote">"Hi !"</span>
+        when the name parameter is not passed.
+      &#60;/p&#62;
+    &#60;/div&#62;<p class="paragraph"/>&#60;/body&#62;
+&#60;/html&#62;</pre></div><p class="paragraph"/><h4>Step 5: Validate the specifications</h4><p class="paragraph"/>Once you have writen the specifications it would be convenient that you can review 
+and validate them with your client before you start with the instrumentation and fixture works.<p class="paragraph"/><h4>Step 6: Create the required instrumentation and fixture  </h4><p class="paragraph"/>Now we instrument the previous specification through Concordion specific attributes:<p class="paragraph"/><div class="code"><pre>&#60;html xmlns:concordion=<span class="java&#45;quote">"http://www.concordion.org/2007/concordion"</span> xmlns:ext=<span class="java&#45;quote">"urn:concordion&#45;extensions:2010"</span>&#62;
+&#60;head&#62;
+    &#60;title&#62;Hello Specification&#60;/title&#62;
+&#60;/head&#62;
+&#60;body&#62;<p class="paragraph"/>    &#60;h1&#62;Hello Specification&#60;/h1&#62;<p class="paragraph"/>    &#60;h2&#62;Greeting message&#60;/h2&#62;<p class="paragraph"/>    &#60;p&#62;
+      The application's  URL /hello should response with a greeting message with the
+      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span> inside an H1 header element, where username is the value 
+      of the name parameter passed.
+    &#60;/p&#62;<p class="paragraph"/>    &#60;p&#62;
+      When the name parameter is missing, the application should respond with a simple <span class="java&#45;quote">"Hi!"</span>.
+    &#60;/p&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
+      &#60;h3&#62;Existing name example&#60;/h3&#62;
+      &#60;p concordion:execute=<span class="java&#45;quote">"&#35;h1Message = h1MessageForName(&#35;name)"</span>&#62;
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message 
+        <span class="java&#45;quote">"&#60;span concordion:assertEquals="</span>&#35;h1Message<span class="java&#45;quote">"&#62;Hi Groovy!&#60;/span&#62;"</span>
+        when the name parameter passed is <span class="java&#45;quote">"&#60;span concordion:set="</span>&#35;name<span class="java&#45;quote">"&#62;Groovy&#60;/span&#62;"</span>.
+      &#60;/p&#62;
+    &#60;/div&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
+      &#60;h3&#62;Missing name example&#60;/h3&#62;
+      &#60;p concordion:execute=<span class="java&#45;quote">"&#35;h1Message = h1MessageForName(&#35;name)"</span>&#62;
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message  
+        <span class="java&#45;quote">"&#60;span concordion:assertEquals="</span>&#35;h1Message<span class="java&#45;quote">"&#62;Hi !&#60;/span&#62;"</span>
+        when the name parameter is not passed&#60;span concordion:set=<span class="java&#45;quote">"&#35;name"</span>&#62;&#60;/span&#62;.
+      &#60;/p&#62;
+    &#60;/div&#62;<p class="paragraph"/>&#60;/body&#62;
+&#60;/html&#62;</pre></div><p class="paragraph"/>We also need code serving as a bridge between the previous specification 
+and the system under test. This code is known as test's fixture.<p class="paragraph"/>We create the test class <code>HelloTest.grovy</code> (or we can edit the generated in step 3) 
+in the following way:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">package</span> es.osoco.concordion.quickstart<p class="paragraph"/><span class="java&#45;keyword">import</span> geb.Browser
+<span class="java&#45;keyword">import</span> geb.Page<p class="paragraph"/><span class="java&#45;keyword">import</span> org.openqa.selenium.WebDriver
+<span class="java&#45;keyword">import</span> org.openqa.selenium.firefox.FirefoxDriver<p class="paragraph"/><span class="java&#45;keyword">import</span> org.junit.AfterClass
+<span class="java&#45;keyword">import</span> org.junit.BeforeClass<p class="paragraph"/><span class="java&#45;keyword">public</span> class HelloTest &#123;<p class="paragraph"/>    <span class="java&#45;keyword">private</span> <span class="java&#45;keyword">static</span> WebDriver webDriver<p class="paragraph"/>    @BeforeClass
+    <span class="java&#45;keyword">public</span> <span class="java&#45;keyword">static</span> void setup() &#123;
+	webDriver = <span class="java&#45;keyword">new</span> FirefoxDriver()
+    &#125;<p class="paragraph"/>    <span class="java&#45;object">String</span> h1MessageForName(<span class="java&#45;object">String</span> name) &#123;
+	def browser = <span class="java&#45;keyword">new</span> Browser(webDriver) 
+	browser.to(HelloPage, name: name)
+	browser.message
+    &#125;<p class="paragraph"/>    @AfterClass
+    <span class="java&#45;keyword">public</span> <span class="java&#45;keyword">static</span> void close() &#123;
+	webDriver?.close()
+    &#125;<p class="paragraph"/>&#125;<p class="paragraph"/>class HelloPage <span class="java&#45;keyword">extends</span> Page &#123;<p class="paragraph"/>    <span class="java&#45;keyword">static</span> url = <span class="java&#45;quote">"http://localhost:8080/concordion&#45;quickstart/hello"</span>
+    <span class="java&#45;keyword">static</span> content = &#123;       
+        message &#123; $(<span class="java&#45;quote">"h1"</span>).text() &#125;
+    &#125;    
+&#125;</pre></div><p class="paragraph"/>This test uses Selenium and Geb classes, so we must declare these dependencies adding the following
+lines to the project's <code>BuildConfig.groovy</code>:<p class="paragraph"/><div class="code"><pre>dependencies &#123;
+        &#8230;
+	test(<span class="java&#45;quote">"org.codehaus.geb:geb&#45;core:latest.release"</span>)
+	test(<span class="java&#45;quote">"org.seleniumhq.selenium:selenium&#45;firefox&#45;driver:2.0a7"</span>)
+    &#125;</pre></div><p class="paragraph"/><h4>Step 7: Run the tests with failures (red bar)</h4><p class="paragraph"/>We run the previous test with the following command:<p class="paragraph"/><div class="code"><pre>grails test&#45;app concordion: Hello</pre></div><p class="paragraph"/>As you can expect, the test should failure because the system under test is not yet implemented. 
+You can check that loading the resulting HTML report located at 
+<code>target/test-reports/concordion/es/osoco/concordion/quickstart/Hello.html</code>.<p class="paragraph"/>The following figure shows how the test fails with 404 errors:<p class="paragraph"/><img border="0" class="center" src="../img/quickstart-specification-failure.png"></img><p class="paragraph"/><h4>Step 8: Create a Controller to pass the specification test</h4><p class="paragraph"/><div class="code"><pre>grails create&#45;controller es.osoco.concordion.quickstart.Hello</pre></div><p class="paragraph"/>Edit the controller in the following way:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">package</span> es.osoco.concordion.quickstart<p class="paragraph"/>class HelloController &#123;<p class="paragraph"/>    def index = &#123; render <span class="java&#45;quote">"&#60;h1&#62;Hi $&#123;params.name ?: ''&#125;!&#60;/h1&#62;"</span> &#125;<p class="paragraph"/>&#125;</pre></div><p class="paragraph"/>
+<h4>Step 9: Run again the test (green bar)</h4><p class="paragraph"/>We run again the Concordion tests:<p class="paragraph"/><div class="code"><pre>grails test&#45;app concordion:</pre></div><p class="paragraph"/>In this case the test should run successfully and generate a report like the depicted in the
+following figure:<p class="paragraph"/><img border="0" class="center" src="../img/quickstart-specification-success.png"></img><h2><a name="3.2 Example Project">3.2 Example Project</a></h2>We are creating an example project based on the 
+<a href="http://github.com/grails-samples/grails-pomodoro" target="blank">Grails Pomodoro</a> application to test the plugin and
+provide examples of web-based acceptance tests for a little Grails application.<p class="paragraph"/>The example project <code>grails-pomodoro-concordion</code> is not bundled in the plugin itself and it is still
+a work in progress, but you can found it at 
+<a href="http://github.com/osoco/grails-pomodoro-concordion" target="blank">OSOCO&#39;s GitHub repository</a>.
+    </body>
+</html>

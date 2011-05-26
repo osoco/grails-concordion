@@ -1,0 +1,3 @@
+DefaultPackage
+es.osoco.grails.plugins.concordion.extensions
+es.osoco.grails.plugins.concordion.runner

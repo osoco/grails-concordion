@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+        <title>concordion 0.1 - Reference Documentation</title>
+        <link rel="stylesheet" href="../../css/ref.css" type="text/css" media="screen" title="Ref" charset="utf-8"/>
+    </head>
+    <body class="body">
+    <h1>create-concordion-test</h1><p class="paragraph"/><h2>Purpose</h2><p class="paragraph"/>Create a new sample specification, consisting of an HTML file and its companion Groovy fixture test,
+that you can use as an starting point to modify and create your own specification.<p class="paragraph"/><h2>Description</h2><p class="paragraph"/>The script creates a sample Concordion-based specification under the <code>test/concordion</code> directory, 
+which you can use as an starting point template to modify and build your own tests. 
+As result of this command, if you inspect the <code>test/concordion/&#60;package&#62;</code> directory you will find 
+the following two files:
+<ul class="star">
+<li><code>&#60;SpecificationName&#62;.html</code>: an HTML file containing the sample specification.</li>
+<li><code>&#60;SpecificationName&#62;Test.groovy</code>: the fixture test Groovy class for this specification.</li>
+</ul><p class="paragraph"/>If the <code>geb</code> option is specified, then the script generate a simple sample for a web specification 
+based on the Geb framework (a browser automation solution for the Groovy language). 
+You may prefer this option when you want to write specs about your web interfaces.<p class="paragraph"/>If the specification name specified already exists in your project, 
+then the script will prompt yoy if you want to overwrite the specification's files or not.<p class="paragraph"/>Usage:
+<div class="code"><pre>grails create&#45;concordion&#45;test &#91;&#45;&#45;geb&#93; specificationName</pre></div><p class="paragraph"/>Required arguments:
+<ul class="star">
+<li><code>specificationName</code> - The name of the specification to create (you can also specify a package name)</li>
+</ul><p class="paragraph"/>Optional arguments:
+<ul class="star">
+<li><code>geb</code> - if specified the sample specification generated will be a Geb-based one.</li>
+</ul><p class="paragraph"/><blockquote class="note">
+Note that to run Geb-based specifications you have to declared the following test dependencies
+in the project's <code>BuildConfig.groovy</code>:
+<div class="code"><pre>dependencies &#123;
+        &#8230;
+	test(<span class="java&#45;quote">"org.codehaus.geb:geb&#45;core:latest.release"</span>)
+	test(<span class="java&#45;quote">"org.seleniumhq.selenium:selenium&#45;firefox&#45;driver:2.0a7"</span>)
+    &#125;</pre></div>
+</blockquote>
+
+    </body>
+</html>

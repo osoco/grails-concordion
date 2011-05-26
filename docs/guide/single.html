@@ -1,0 +1,181 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>concordion 0.1 - Reference Documentation</title>
+        <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen" title="Style" charset="utf-8"/>
+        <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
+    </head>
+    <body class="body">
+        <div id="header">
+            <div class="images"><br/><br/>
+                <a href="http://grails.org" target="_blank"><img alt="The Grails Framework" src="../img/grails.png" border="0"/></a>
+                <span style="right:30px; top:20px; position:absolute;">
+                    <a href="../index.html" target="_top">Frames</a> | <a href="index.html" target="_top">No Frames</a><br/><br/>
+                    <a href="http://springsource.com" target="_blank"><img alt="SpringSource - A Division of VMware" src="../img/springsource-logo.png" border="0"/></a>
+                </span>
+            </div>
+            <div class="message">concordion</div>
+            <h1>concordion - Reference Documentation</h1>
+            <p><strong>Authors:</strong> </p>
+            <p><strong>Version:</strong> 0.1</p>
+            <em></em>
+        </div>
+
+        <div id="toc">
+            <h2>Table of Contents</h2>
+            <div class="tocItem" style="margin-left:0px"><a href="#1 Introduction to the Concordion Plugin">1 Introduction to the Concordion Plugin</a></div><div class="tocItem" style="margin-left:10px"><a href="#1.1 Features">1.1 Features</a></div><div class="tocItem" style="margin-left:10px"><a href="#1.2 Authors">1.2 Authors</a></div><div class="tocItem" style="margin-left:10px"><a href="#1.3 Release History">1.3 Release History</a></div><div class="tocItem" style="margin-left:0px"><a href="#2 Getting Started">2 Getting Started</a></div><div class="tocItem" style="margin-left:10px"><a href="#2.1 Installation">2.1 Installation</a></div><div class="tocItem" style="margin-left:10px"><a href="#2.2 Usage">2.2 Usage</a></div><div class="tocItem" style="margin-left:10px"><a href="#2.3 Configuration">2.3 Configuration</a></div><div class="tocItem" style="margin-left:0px"><a href="#3 Tutorials">3 Tutorials</a></div><div class="tocItem" style="margin-left:10px"><a href="#3.1 Web-based Specifications Quickstart">3.1 Web-based Specifications Quickstart</a></div><div class="tocItem" style="margin-left:10px"><a href="#3.2 Example Project">3.2 Example Project</a></div>
+        </div>
+        <div id="content">
+            <h1><a name="1 Introduction to the Concordion Plugin">1 Introduction to the Concordion Plugin</a></h1>The Concordion plugin provides a convenient integration between the 
+<a href="http://concordion.org" target="blank">Concordion framework</a> 
+---an open source tool for writing automated acceptance tests in Java--- and Grails applications.<p class="paragraph"/>This guide documents the installation and usage of the plugin and provides the first steps to
+easily starting to write and run active specifications for your Grails applications using Concordion.<p class="paragraph"/>
+<h2><a name="1.1 Features">1.1 Features</a></h2>This initial version of the plugin provides the following minimal set of features 
+to integrate Concordion-based tests in a Grails application:<p class="paragraph"/><h4>Custom test phase</h4><p class="paragraph"/>The plugin adds a new custom <code>concordion</code> phase type to the already existing in Grails: <code>unit</code>,
+<code>integration</code>, <code>functional</code> and <code>other</code>.<p class="paragraph"/>A Grails phase type controls the state of the application at test time.<p class="paragraph"/>In this initial version, the <code>concordion</code> test phase is equivalent to the <code>functional</code> one, i.e.
+the application will be fully running for the Concordion tests.<p class="paragraph"/><h4>Custom test type</h4><p class="paragraph"/>The plugin also defines a new custom <code>concordion</code> test type that defines the group of tests to
+run and the test running mechanism.<p class="paragraph"/>The <code>concordion</code> test type selects those classes with the
+suffix <code>Test</code> or <code>Tests</code> under the <code>test/concordion</code> directory. As running mechanism this test type
+provides a custom JUnit4 runner resulting from a mixin between the <code>GrailsTestCaseRunner</code> shipped 
+with Grails and the <code>ConcordionRunner</code> from the Concordion framework.<p class="paragraph"/><h4>Mechanism to configure Concordion extensions</h4><p class="paragraph"/>You can declare globally the Concordion extensions to be used trough the 
+Grails application's <code>BuildConfig.groovy</code>. This mechanism is valid both, for your own extensions and for
+those provided by the <a href="http://code.google.com/p/concordion-extensions/" target="blank">concordion-extensions project</a>.<p class="paragraph"/>In the case of concordion-extensions, the plugin provides a <a href="http://github.com/osoco/grails-concordion/blob/master/src/groovy/es/osoco/grails/plugins/concordion/extensions/ConfigurableExtensionFactory.groovy" target="blank">ConfigurableExtensionFactory</a> which implements
+<code>org.concordion.api.extension.ConcordionExtensionFactory</code>, providing a factory mechanism that allow
+to configure those extensions that require customization through a simple DSL in the <code>BuildConfig.groovy</code>.<p class="paragraph"/>The initial version includes configurable implementations for the <code>org.concordion.api.extension.LoggingTooltipExtension</code> and <code>org.concordion.api.extension.ScreenshotExtension</code> extensions.<p class="paragraph"/>You can read about how to configure these extensions in the Configuration section of this guide.<p class="paragraph"/><h4>Creation script</h4><p class="paragraph"/>Once you have installed the plugin you will have the command 
+<a href="../ref/Creation Scripts/create-concordion-test.html" class="Creation Scripts">create-concordion-test</a> available in your project.<p class="paragraph"/>You can always write an specification from scratch or copy it from a previous one 
+and modify it, but this command allows you easily create a new sample specification 
+(and its companion fixture test) by running:<p class="paragraph"/><div class="code"><pre>grails create&#45;concordion&#45;test &#60;<span class="java&#45;keyword">package</span>.SpecificationName&#62;</pre></div><p class="paragraph"/>
+<h2><a name="1.2 Authors">1.2 Authors</a></h2><ul class="star">
+<li>Rafael Luque (<a href="http://www.osoco.es/" target="blank">OSOCO</a>)</li>
+</ul><p class="paragraph"/><h2><a name="1.3 Release History">1.3 Release History</a></h2><ul class="star">
+<li>May 23, 2011</li>
+<ul class="star">
+<li>Initial 0.1 release</li>
+</ul></ul><p class="paragraph"/><h1><a name="2 Getting Started">2 Getting Started</a></h1>The following sections describe how to install the plugin and its typical usage and configuration.<p class="paragraph"/><h2><a name="2.1 Installation">2.1 Installation</a></h2>You can install the plugin as usual in Grails:<p class="paragraph"/><div class="code"><pre>grails install&#45;plugin concordion</pre></div><p class="paragraph"/>The plugin will download some dependencies like Concordion, 
+Concordion Extensions and some Selenium libraries required by these extensions.<p class="paragraph"/>If the directory <code>test/concordion</code> is missing in your project, the plugin will 
+create it when is installed.<p class="paragraph"/>
+<h2><a name="2.2 Usage">2.2 Usage</a></h2>
+<h4>Create specifications</h4><p class="paragraph"/>The first step will be to create some specifications (acceptance tests) in the <code>test/concordion</code>
+directory. You can create them manually or create a template using the 
+<a href="../ref/Creation Scripts/create-concordion-test.html" class="Creation Scripts">create-concordion-test</a> script.<p class="paragraph"/>For instance, you can execute the command:<p class="paragraph"/><div class="code"><pre>grails create&#45;concordion&#45;test org.example.SimpleSpec</pre></div><p class="paragraph"/>This will generate a very simple template for an acceptance test, consisting on the specification file 
+<code>SimpleSpec.html</code> and a fixture class <code>SimpleSpecTest.groovy</code>. Both files will be generated under the
+<code>test/concordion/org/example</code> directory that the command will create if it does not exist.<p class="paragraph"/><h4>Run specifications</h4><p class="paragraph"/>Once you have one or more Concordion specs, you can run them using the new phase test concordion in
+the following way:<p class="paragraph"/><div class="code"><pre>grails test&#45;app concordion:</pre></div><p class="paragraph"/>Running this command will start up the Grails application (this way your specifications can test the
+web interface), launch all the Concordion specifications and return the results.<p class="paragraph"/>By default all tests are executed, but you can specify the names of the tests (without the "Tests" or other test type suffix) as argument to the command.<p class="paragraph"/>Beside the usual test reports generated at <code>target/test-reports/TESTS-TestSuites.xml</code>, <code>target/test-reports/plain</code> and <code>target/test-reports/html</code>, the Concordion tests will generate highly readable reports located
+at <code>target/test-reports/concordion</code>.
+<h2><a name="2.3 Configuration">2.3 Configuration</a></h2>There are a couple configuration options for the plugin:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">System property</strong></th><th><strong class="bold">Default value</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>concordion.output.dir</td><td><code>target/test-reports/concordion</code></td><td>the folder where test reports are generated</td></tr><tr class="table-even"><td>concordion.extensions</td><td><code>org.concordion.ext.Extensions</code> (use the default configuration of each extension in the concordion-extensions project)</td><td>list of Concordion extensions and/or extension factories separated by commas</td></tr></table><p class="paragraph"/><h4>Concordion extensions</h4><p class="paragraph"/>The plugin also provides another way to configure extensions through application's configuration 
+instead of the <code>concordion.extensions</code> system property. You can specify the list of extensions and/or extension factories to use with the following entries in <code>BuildConfig.groovy</code>:<p class="paragraph"/><div class="code"><pre>concordion.extensions = &#91; <span class="java&#45;quote">"Extension1"</span>, <span class="java&#45;quote">"Extension2"</span> &#93;
+concordion.extensionFactories = &#91; <span class="java&#45;quote">"ExtensionFactory1"</span>, <span class="java&#45;quote">"ExtensionFactory2"</span> &#93;</pre></div><p class="paragraph"/><blockquote class="note">Note that you should provide fully qualified class names.</blockquote><p class="paragraph"/>If you want to configure the LoggingTooltipExtension or the ScreenshotExtension provided 
+by the concordion-extensions project, the plugin includes configurable factories 
+(<code>es.osoco.grails.plugins.concordion.extensions.ConfigurableLoggingTooltipExtensionFactory</code> 
+and <code>es.osoco.grails.plugins.concordion.extensions.CongigurableScreenshotExtensionFactory</code>) to avoid
+you have to implement your own factories and can configure the extensions through a simple DSL in
+<code>BuildConfig</code>. For example:<p class="paragraph"/><div class="code"><pre>concordion.extensionFactories = &#91; 
+  <span class="java&#45;quote">"es.osoco.grails.plugins.concordion.extensions.ConfigurableScreenshotExtensionFactory"</span>,
+  <span class="java&#45;quote">"es.osoco.grails.plugins.concordion.extensions.ConfigurableLoggingTooltipExtensionFactory"</span> &#93;<p class="paragraph"/>concordion.screenshotExtensionFactoryConfiguration = &#123;
+  screenshotOnThrowable <span class="java&#45;keyword">true</span>
+  screenshotOnAssertionFailure <span class="java&#45;keyword">true</span>
+  maxWidth 400
+&#125;<p class="paragraph"/>concordion.loggingTooltipExtensionFactoryConfiguration = &#123;
+  loggers <span class="java&#45;quote">"org.example.pomodoro.pages, selenium.events"</span>
+  level Level.FINE
+  showConsoleLogging <span class="java&#45;keyword">true</span>
+&#125;</pre></div><p class="paragraph"/>The following table shows the configuration options available to configure the <code>ConfigurableScreenshotExtensionFactory</code>:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Option</strong></th><th><strong class="bold">Default value</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>screenshotOnAssertionFailure</td><td><code>true</code></td><td>Sets whether screenshots will be embedded in the output when assertions fail.</td></tr><tr class="table-even"><td>screenshotOnAssertionSuccess</td><td><code>false</code></td><td>Sets whether screenshots will be embedded in the output when assertions pass.</td></tr><tr class="table-odd"><td>screenshotOnThrowable</td><td><code>true</code></td><td>Sets whether screenshots will be embedded in the output when uncaught Throwables occur in the test.</td></tr><tr class="table-even"><td>maxWidth</td><td>Any</td><td>Sets the maximum width that will be used for display of the images in the output.</td></tr><tr class="table-odd"><td>screenshotTaker</td><td>Take a shot of the full visible screen.</td><td>Set a custom screenshot taker.</td></tr></table><p class="paragraph"/>
+The following table shows the configuration options available to configure the <code>ConfigurableLoggingTooltipExtensionFactory</code>:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Option</strong></th><th><strong class="bold">Default value</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>loggers</td><td>Empty string (indicates the root logger).</td><td>A comma separated list of the names of loggers whose output is to be shown in the Concordion output.</td></tr><tr class="table-even"><td>level</td><td><code>Level.INFO</code></td><td>the logging <code>java.util.logging.Level</code> for the handler that writes to the Concordion output. Log messages of this level and higher will be output.</td></tr><tr class="table-odd"><td>showConsoleLogging</td><td><code>false</code></td><td><code>false</code> to remove console output for the root logger, <code>true</code> to show the console output.</td></tr></table><p class="paragraph"/><p class="paragraph"/><h1><a name="3 Tutorials">3 Tutorials</a></h1><h2><a name="3.1 Web-based Specifications Quickstart">3.1 Web-based Specifications Quickstart</a></h2>This quickstart shows how to use the Concordion plugin to write specifications 
+that test the web behaviour of a Grails application using <a href="http://geb.codehaus.org/latest/index.html" target="blank">Geb</a>.<p class="paragraph"/><h4>Step 1: Create a sample Grails project</h4><p class="paragraph"/><div class="code"><pre>grails create&#45;app concordion&#45;quickstart</pre></div><p class="paragraph"/><h4>Step 2: Install the Concordion plugin</h4><p class="paragraph"/><div class="code"><pre>cd concordion&#45;quickstart
+grails install&#45;plugin concordion</pre></div><p class="paragraph"/><h4>Step 3: Create an specification template</h4><p class="paragraph"/>Execute the <code>create-concordion-test</code> command with the <code>geb</code> argument:<p class="paragraph"/><div class="code"><pre>grails create&#45;concordion&#45;test &#45;web es.osoco.concordion.quickstart.Hello</pre></div><p class="paragraph"/>Running this will create in the <code>test/concordion/es/osoco/concordion/quickstart</code> 
+directory a Geb-based specification we can use as starting point, consisting in the
+files <code>Hello.html</code> and <code>HelloTest.groovy</code>.<p class="paragraph"/><h4>Step 4: Create the specification</h4><p class="paragraph"/>Change the previous sample specification (<code>Hello.html</code>) to adapt it to the actual requirements.<p class="paragraph"/>Suppose that out imaginary client has requested us an application that reply with a greeting message 
+that includes the user's name that is sent as a request parameter. We can translate this requirement
+to the following Concordion specification:<p class="paragraph"/><div class="code"><pre>&#60;html xmlns:concordion=<span class="java&#45;quote">"http://www.concordion.org/2007/concordion"</span> xmlns:ext=<span class="java&#45;quote">"urn:concordion&#45;extensions:2010"</span>&#62;
+&#60;head&#62;
+    &#60;title&#62;Hello Specification&#60;/title&#62;
+&#60;/head&#62;
+&#60;body&#62;<p class="paragraph"/>    &#60;h1&#62;Hello Specification&#60;/h1&#62;<p class="paragraph"/>    &#60;h2&#62;Greeting message&#60;/h2&#62;<p class="paragraph"/>    &#60;p&#62;
+      The application's  URL /hello should response with a greeting message with the
+      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span> inside an H1 header element, where username is the value 
+      of the name parameter passed.
+    &#60;/p&#62;<p class="paragraph"/>    &#60;p&#62;
+      When the name parameter is missing, the application should respond with a simple <span class="java&#45;quote">"Hi!"</span>.
+    &#60;/p&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
+      &#60;h3&#62;Existing name example&#60;/h3&#62;
+      &#60;p&#62;
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message <span class="java&#45;quote">"Hi Groovy!"</span>
+        when the name parameter passed is <span class="java&#45;quote">"Groovy"</span>.
+      &#60;/p&#62;
+    &#60;/div&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
+      &#60;h3&#62;Missing name example&#60;/h3&#62;
+      &#60;p&#62;
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message  <span class="java&#45;quote">"Hi !"</span>
+        when the name parameter is not passed.
+      &#60;/p&#62;
+    &#60;/div&#62;<p class="paragraph"/>&#60;/body&#62;
+&#60;/html&#62;</pre></div><p class="paragraph"/><h4>Step 5: Validate the specifications</h4><p class="paragraph"/>Once you have writen the specifications it would be convenient that you can review 
+and validate them with your client before you start with the instrumentation and fixture works.<p class="paragraph"/><h4>Step 6: Create the required instrumentation and fixture  </h4><p class="paragraph"/>Now we instrument the previous specification through Concordion specific attributes:<p class="paragraph"/><div class="code"><pre>&#60;html xmlns:concordion=<span class="java&#45;quote">"http://www.concordion.org/2007/concordion"</span> xmlns:ext=<span class="java&#45;quote">"urn:concordion&#45;extensions:2010"</span>&#62;
+&#60;head&#62;
+    &#60;title&#62;Hello Specification&#60;/title&#62;
+&#60;/head&#62;
+&#60;body&#62;<p class="paragraph"/>    &#60;h1&#62;Hello Specification&#60;/h1&#62;<p class="paragraph"/>    &#60;h2&#62;Greeting message&#60;/h2&#62;<p class="paragraph"/>    &#60;p&#62;
+      The application's  URL /hello should response with a greeting message with the
+      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span> inside an H1 header element, where username is the value 
+      of the name parameter passed.
+    &#60;/p&#62;<p class="paragraph"/>    &#60;p&#62;
+      When the name parameter is missing, the application should respond with a simple <span class="java&#45;quote">"Hi!"</span>.
+    &#60;/p&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
+      &#60;h3&#62;Existing name example&#60;/h3&#62;
+      &#60;p concordion:execute=<span class="java&#45;quote">"&#35;h1Message = h1MessageForName(&#35;name)"</span>&#62;
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message 
+        <span class="java&#45;quote">"&#60;span concordion:assertEquals="</span>&#35;h1Message<span class="java&#45;quote">"&#62;Hi Groovy!&#60;/span&#62;"</span>
+        when the name parameter passed is <span class="java&#45;quote">"&#60;span concordion:set="</span>&#35;name<span class="java&#45;quote">"&#62;Groovy&#60;/span&#62;"</span>.
+      &#60;/p&#62;
+    &#60;/div&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
+      &#60;h3&#62;Missing name example&#60;/h3&#62;
+      &#60;p concordion:execute=<span class="java&#45;quote">"&#35;h1Message = h1MessageForName(&#35;name)"</span>&#62;
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message  
+        <span class="java&#45;quote">"&#60;span concordion:assertEquals="</span>&#35;h1Message<span class="java&#45;quote">"&#62;Hi !&#60;/span&#62;"</span>
+        when the name parameter is not passed&#60;span concordion:set=<span class="java&#45;quote">"&#35;name"</span>&#62;&#60;/span&#62;.
+      &#60;/p&#62;
+    &#60;/div&#62;<p class="paragraph"/>&#60;/body&#62;
+&#60;/html&#62;</pre></div><p class="paragraph"/>We also need code serving as a bridge between the previous specification 
+and the system under test. This code is known as test's fixture.<p class="paragraph"/>We create the test class <code>HelloTest.grovy</code> (or we can edit the generated in step 3) 
+in the following way:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">package</span> es.osoco.concordion.quickstart<p class="paragraph"/><span class="java&#45;keyword">import</span> geb.Browser
+<span class="java&#45;keyword">import</span> geb.Page<p class="paragraph"/><span class="java&#45;keyword">import</span> org.openqa.selenium.WebDriver
+<span class="java&#45;keyword">import</span> org.openqa.selenium.firefox.FirefoxDriver<p class="paragraph"/><span class="java&#45;keyword">import</span> org.junit.AfterClass
+<span class="java&#45;keyword">import</span> org.junit.BeforeClass<p class="paragraph"/><span class="java&#45;keyword">public</span> class HelloTest &#123;<p class="paragraph"/>    <span class="java&#45;keyword">private</span> <span class="java&#45;keyword">static</span> WebDriver webDriver<p class="paragraph"/>    @BeforeClass
+    <span class="java&#45;keyword">public</span> <span class="java&#45;keyword">static</span> void setup() &#123;
+	webDriver = <span class="java&#45;keyword">new</span> FirefoxDriver()
+    &#125;<p class="paragraph"/>    <span class="java&#45;object">String</span> h1MessageForName(<span class="java&#45;object">String</span> name) &#123;
+	def browser = <span class="java&#45;keyword">new</span> Browser(webDriver) 
+	browser.to(HelloPage, name: name)
+	browser.message
+    &#125;<p class="paragraph"/>    @AfterClass
+    <span class="java&#45;keyword">public</span> <span class="java&#45;keyword">static</span> void close() &#123;
+	webDriver?.close()
+    &#125;<p class="paragraph"/>&#125;<p class="paragraph"/>class HelloPage <span class="java&#45;keyword">extends</span> Page &#123;<p class="paragraph"/>    <span class="java&#45;keyword">static</span> url = <span class="java&#45;quote">"http://localhost:8080/concordion&#45;quickstart/hello"</span>
+    <span class="java&#45;keyword">static</span> content = &#123;       
+        message &#123; $(<span class="java&#45;quote">"h1"</span>).text() &#125;
+    &#125;    
+&#125;</pre></div><p class="paragraph"/>This test uses Selenium and Geb classes, so we must declare these dependencies adding the following
+lines to the project's <code>BuildConfig.groovy</code>:<p class="paragraph"/><div class="code"><pre>dependencies &#123;
+        &#8230;
+	test(<span class="java&#45;quote">"org.codehaus.geb:geb&#45;core:latest.release"</span>)
+	test(<span class="java&#45;quote">"org.seleniumhq.selenium:selenium&#45;firefox&#45;driver:2.0a7"</span>)
+    &#125;</pre></div><p class="paragraph"/><h4>Step 7: Run the tests with failures (red bar)</h4><p class="paragraph"/>We run the previous test with the following command:<p class="paragraph"/><div class="code"><pre>grails test&#45;app concordion: Hello</pre></div><p class="paragraph"/>As you can expect, the test should failure because the system under test is not yet implemented. 
+You can check that loading the resulting HTML report located at 
+<code>target/test-reports/concordion/es/osoco/concordion/quickstart/Hello.html</code>.<p class="paragraph"/>The following figure shows how the test fails with 404 errors:<p class="paragraph"/><img border="0" class="center" src="../img/quickstart-specification-failure.png"></img><p class="paragraph"/><h4>Step 8: Create a Controller to pass the specification test</h4><p class="paragraph"/><div class="code"><pre>grails create&#45;controller es.osoco.concordion.quickstart.Hello</pre></div><p class="paragraph"/>Edit the controller in the following way:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">package</span> es.osoco.concordion.quickstart<p class="paragraph"/>class HelloController &#123;<p class="paragraph"/>    def index = &#123; render <span class="java&#45;quote">"&#60;h1&#62;Hi $&#123;params.name ?: ''&#125;!&#60;/h1&#62;"</span> &#125;<p class="paragraph"/>&#125;</pre></div><p class="paragraph"/>
+<h4>Step 9: Run again the test (green bar)</h4><p class="paragraph"/>We run again the Concordion tests:<p class="paragraph"/><div class="code"><pre>grails test&#45;app concordion:</pre></div><p class="paragraph"/>In this case the test should run successfully and generate a report like the depicted in the
+following figure:<p class="paragraph"/><img border="0" class="center" src="../img/quickstart-specification-success.png"></img><h2><a name="3.2 Example Project">3.2 Example Project</a></h2>We are creating an example project based on the 
+<a href="http://github.com/grails-samples/grails-pomodoro" target="blank">Grails Pomodoro</a> application to test the plugin and
+provide examples of web-based acceptance tests for a little Grails application.<p class="paragraph"/>The example project <code>grails-pomodoro-concordion</code> is not bundled in the plugin itself and it is still
+a work in progress, but you can found it at 
+<a href="http://github.com/osoco/grails-pomodoro-concordion" target="blank">OSOCO&#39;s GitHub repository</a>.
+        </div>
+        <div id="footer">
+             
+        </div>
+    </body>
+</html>
