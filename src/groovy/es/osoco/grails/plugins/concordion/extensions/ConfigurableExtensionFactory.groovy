@@ -23,7 +23,7 @@
 package es.osoco.grails.plugins.concordion.extensions
 
 
-import org.concordion.api.extension.ConcordionExtension;
+import org.concordion.api.extension.ConcordionExtension
 import org.concordion.api.extension.ConcordionExtensionFactory
 
 
@@ -42,8 +42,7 @@ public abstract class ConfigurableExtensionFactory implements ConcordionExtensio
     @Override
     public ConcordionExtension createExtension() {
         if (extensionConfig) {
-            extensionConfig.delegate = this
-            extensionConfig()
+            with extensionConfig
         }
         build()
     }

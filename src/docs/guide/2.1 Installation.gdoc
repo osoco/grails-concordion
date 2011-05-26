@@ -8,6 +8,6 @@ The plugin will download some dependencies like Concordion,
 Concordion Extensions and some Selenium libraries required by these extensions.
 
 If the directory @test/concordion@ is missing in your project, the plugin will 
-create when the plugin is installed.
+create it when is installed.
 
 

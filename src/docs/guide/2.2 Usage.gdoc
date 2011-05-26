@@ -1,8 +1,10 @@
 
 h4. Create specifications
 
-The first step will be to create some specifications (or acceptance tests) in the @test/concordion@
-directory. You can create them manually or create a template using the @create-concordion-test@ script.
+The first step will be to create some specifications (acceptance tests) in the @test/concordion@
+directory. You can create them manually or create a template using the 
+[create-concordion-test|Creation Scripts] script.
+
 For instance, you can execute the command:
 
 {code}

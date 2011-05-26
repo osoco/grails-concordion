@@ -1,5 +1,5 @@
-This is a quickstart to use the Concordion plugin to write specifications that test the web behaviour of 
-a Grails application using Geb.
+This quickstart shows how to use the Concordion plugin to write specifications 
+that test the web behaviour of a Grails application using [Geb|http://geb.codehaus.org/latest/index.html].
 
 h4. Step 1: Create a sample Grails project
 
@@ -10,6 +10,7 @@ grails create-app concordion-quickstart
 h4. Step 2: Install the Concordion plugin
 
 {code}
+cd concordion-quickstart
 grails install-plugin concordion
 {code}
 
@@ -18,11 +19,12 @@ h4. Step 3: Create an specification template
 Execute the @create-concordion-test@ command with the @geb@ argument:
 
 {code}
-grails create-concordion-test -geb es.osoco.concordion.quickstart.Hello
+grails create-concordion-test -web es.osoco.concordion.quickstart.Hello
 {code}
 
-Running this will create a Geb-based specification we can use as starting point in
-the @test/concordion/es/osoco/concordion/quickstart@ directory.
+Running this will create in the @test/concordion/es/osoco/concordion/quickstart@ 
+directory a Geb-based specification we can use as starting point, consisting in the
+files @Hello.html@ and @HelloTest.groovy@.
 
 h4. Step 4: Create the specification
 
@@ -32,7 +34,7 @@ Suppose that out imaginary client has requested us an application that reply wit
 that includes the user's name that is sent as a request parameter. We can translate this requirement
 to the following Concordion specification:
 
-{code}
+{code:title=Hello.html|borderStyle=bold}
 <html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:ext="urn:concordion-extensions:2010">
 <head>
     <title>Hello Specification</title>
@@ -44,9 +46,9 @@ to the following Concordion specification:
     <h2>Greeting message</h2>
 
     <p>
-      The application's  URL <pre>/hello</pre> should response with a greeting message with the
-      following form: "Hi [name]!" inside an H1 header element, where username is the value 
-      of the <pre>name</pre> parameter passed.
+      The application's  URL /hello should response with a greeting message with the
+      following form: "Hi [username]!" inside an H1 header element, where username is the value 
+      of the name parameter passed.
     </p>
 
     <p>
@@ -54,20 +56,20 @@ to the following Concordion specification:
     </p>
 
     <div class="example">
-      <h3>name parameter example</h3>
+      <h3>Existing name example</h3>
       <p>
-        Given the <pre>/hello</pre> page is requested
+        Given the /hello page is requested
         then the resulting page shows an H1 header with the message "Hi Groovy!"
-        when the <pre>name</pre> parameter passed is "Groovy".
+        when the name parameter passed is "Groovy".
       </p>
     </div>
 
     <div class="example">
-      <h3>Missing name parameter example</h3>
+      <h3>Missing name example</h3>
       <p>
-        Given the <pre>/hello</pre> page is requested
-        then the resulting page shows an H1 header with the message "Hi!"
-        when the <pre>name</pre> parameter is not passed.
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message  "Hi !"
+        when the name parameter is not passed.
       </p>
     </div>
 
@@ -75,9 +77,12 @@ to the following Concordion specification:
 </html>
 {code}
 
-h4. Step 6: Try to validate the specifications with your client
+h4. Step 5: Validate the specifications
 
-h4. Step 5: Add instrumentation and fixture to the specification
+Once you have writen the specifications it would be convenient that you can review 
+and validate them with your client before you start with the instrumentation and fixture works.
+
+h4. Step 6: Create the required instrumentation and fixture  
 
 Now we instrument the previous specification through Concordion specific attributes:
 
@@ -93,9 +98,9 @@ Now we instrument the previous specification through Concordion specific attribu
     <h2>Greeting message</h2>
 
     <p>
-      The application's  URL <pre>/hello</pre> should response with a greeting message with the
-      following form: "Hi [name]!" inside an H1 header element, where username is the value 
-      of the <pre>name</pre> parameter passed.
+      The application's  URL /hello should response with a greeting message with the
+      following form: "Hi [username]!" inside an H1 header element, where username is the value 
+      of the name parameter passed.
     </p>
 
     <p>
@@ -103,21 +108,22 @@ Now we instrument the previous specification through Concordion specific attribu
     </p>
 
     <div class="example">
-      <h3>name parameter example</h3>
+      <h3>Existing name example</h3>
       <p concordion:execute="#h1Message = h1MessageForName(#name)">
-        Given the <pre>/hello</pre> page is requested
+        Given the /hello page is requested
         then the resulting page shows an H1 header with the message 
         "<span concordion:assertEquals="#h1Message">Hi Groovy!</span>"
-        when the <pre concordion:set="#name">name</pre> parameter passed is "Groovy".
+        when the name parameter passed is "<span concordion:set="#name">Groovy</span>".
       </p>
     </div>
 
     <div class="example">
-      <h3>Missing name parameter example</h3>
-      <p>
-        Given the <pre>/hello</pre> page is requested
-        then the resulting page shows an H1 header with the message "Hi!"
-        when the <pre>name</pre> parameter is not passed.
+      <h3>Missing name example</h3>
+      <p concordion:execute="#h1Message = h1MessageForName(#name)">
+        Given the /hello page is requested
+        then the resulting page shows an H1 header with the message  
+        "<span concordion:assertEquals="#h1Message">Hi !</span>"
+        when the name parameter is not passed<span concordion:set="#name"></span>.
       </p>
     </div>
 
@@ -125,10 +131,10 @@ Now we instrument the previous specification through Concordion specific attribu
 </html>
 {code}
 
-We need some code (the test fixture) to bridge the previous specification 
-with the system to test.
+We also need code serving as a bridge between the previous specification 
+and the system under test. This code is known as test's fixture.
 
-We create the test class @HelloTest.grovy@ (or edit the resulting from step 3) 
+We create the test class @HelloTest.grovy@ (or we can edit the generated in step 3) 
 in the following way:
 
 {code}
@@ -175,22 +181,39 @@ class HelloPage extends Page {
 {code}
 
 This test uses Selenium and Geb classes, so we must declare these dependencies adding the following
-lines to the @BuildConfig.groovy@:
+lines to the project's @BuildConfig.groovy@:
 
 {code}
     dependencies {
+        ...
 	test("org.codehaus.geb:geb-core:latest.release")
 	test("org.seleniumhq.selenium:selenium-firefox-driver:2.0a7")
     }
 {code}
 
-h4. Creates a Controller to pass the specification test
+h4. Step 7: Run the tests with failures (red bar)
+
+We run the previous test with the following command:
 
 {code}
-grails create-controller es.osoco.concordion.quickstart.HelloController
+grails test-app concordion: Hello
 {code}
 
-Edit the controller the following way:
+As you can expect, the test should failure because the system under test is not yet implemented. 
+You can check that loading the resulting HTML report located at 
+@target/test-reports/concordion/es/osoco/concordion/quickstart/Hello.html@.
+
+The following figure shows how the test fails with 404 errors:
+
+!quickstart-specification-failure.png!
+
+h4. Step 8: Create a Controller to pass the specification test
+
+{code}
+grails create-controller es.osoco.concordion.quickstart.Hello
+{code}
+
+Edit the controller in the following way:
 
 {code}
 package es.osoco.concordion.quickstart
@@ -198,9 +221,20 @@ package es.osoco.concordion.quickstart
 class HelloController {
 
     def index = { render "<h1>Hi ${params.name ?: ''}!</h1>" }
+
 }
 {code}
 
 
-h4. Run the tests
+h4. Step 9: Run again the test (green bar)
 
+We run again the Concordion tests:
+
+{code}
+grails test-app concordion:
+{code}
+
+In this case the test should run successfully and generate a report like the depicted in the
+following figure:
+
+!quickstart-specification-success.png!

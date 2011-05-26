@@ -1,0 +1,68 @@
+There are a couple configuration options for the plugin:
+
+{table}
+*System property* | *Default value* | *Meaning*
+concordion.output.dir | @target/test-reports/concordion@ | the folder where test reports are generated
+concordion.extensions | @org.concordion.ext.Extensions@ (use the default configuration of each extension in the concordion-extensions project) | list of Concordion extensions and/or extension factories separated by commas
+{table}
+
+h4. Concordion extensions
+
+The plugin also provides another way to configure extensions through application's configuration 
+instead of the @concordion.extensions@ system property. You can specify the list of extensions and/or extension factories to use with the following entries in @BuildConfig.groovy@:
+
+{code}
+concordion.extensions = [ "Extension1", "Extension2" ]
+concordion.extensionFactories = [ "ExtensionFactory1", "ExtensionFactory2" ]
+{code}
+
+{note}Note that you should provide fully qualified class names.{note}
+
+If you want to configure the LoggingTooltipExtension or the ScreenshotExtension provided 
+by the concordion-extensions project, the plugin includes configurable factories 
+(@es.osoco.grails.plugins.concordion.extensions.ConfigurableLoggingTooltipExtensionFactory@ 
+and @es.osoco.grails.plugins.concordion.extensions.CongigurableScreenshotExtensionFactory@) to avoid
+you have to implement your own factories and can configure the extensions through a simple DSL in
+@BuildConfig@. For example:
+
+{code}
+concordion.extensionFactories = [ 
+  "es.osoco.grails.plugins.concordion.extensions.ConfigurableScreenshotExtensionFactory",
+  "es.osoco.grails.plugins.concordion.extensions.ConfigurableLoggingTooltipExtensionFactory" ]
+
+concordion.screenshotExtensionFactoryConfiguration = {
+  screenshotOnThrowable true
+  screenshotOnAssertionFailure true
+  maxWidth 400
+}
+
+concordion.loggingTooltipExtensionFactoryConfiguration = {
+  loggers "org.example.pomodoro.pages, selenium.events"
+  level Level.FINE
+  showConsoleLogging true
+}
+{code}
+
+The following table shows the configuration options available to configure the @ConfigurableScreenshotExtensionFactory@:
+
+{table}
+*Option* | *Default value* | *Meaning*
+screenshotOnAssertionFailure | @true@ | Sets whether screenshots will be embedded in the output when assertions fail.
+screenshotOnAssertionSuccess | @false@ | Sets whether screenshots will be embedded in the output when assertions pass.
+screenshotOnThrowable | @true@ | Sets whether screenshots will be embedded in the output when uncaught Throwables occur in the test.
+maxWidth | Any | Sets the maximum width that will be used for display of the images in the output.
+screenshotTaker | Take a shot of the full visible screen.  | Set a custom screenshot taker.
+{table}
+
+
+The following table shows the configuration options available to configure the @ConfigurableLoggingTooltipExtensionFactory@:
+
+{table}
+*Option* | *Default value* | *Meaning*
+loggers | Empty string (indicates the root logger). | A comma separated list of the names of loggers whose output is to be shown in the Concordion output.
+level | @Level.INFO@ | the logging @java.util.logging.Level@ for the handler that writes to the Concordion output. Log messages of this level and higher will be output.
+showConsoleLogging | @false@ | @false@ to remove console output for the root logger, @true@ to show the console output.
+{table}
+
+
+

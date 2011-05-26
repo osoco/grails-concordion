@@ -1,35 +1,48 @@
-h1. dbm-diff
+h1. create-concordion-test
 
 h2. Purpose
 
-Compares two databases and creates a changelog that will make the changes required to bring them into sync.
+Create a new sample specification, consisting of an HTML file and its companion Groovy fixture test,
+that you can use as an starting point to modify and create your own specification.
 
 h2. Description
 
-Executes against the database configured in @DataSource.groovy@ for the current environment (defaults to @dev@) and another configured datasource in @DataSource.groovy@.
+The script creates a sample Concordion-based specification under the @test/concordion@ directory, 
+which you can use as an starting point template to modify and build your own tests. 
+As result of this command, if you inspect the @test/concordion/<package>@ directory you will find 
+the following two files:
 
-If a filename parameter is specified then the output will be written to the named file, otherwise it will write to the console. If the filename ends with .groovy a Groovy DSL file will be created, otherwise a standard XML file will be created.
+* @<SpecificationName>.html@: an HTML file containing the sample specification.
+* @<SpecificationName>Test.groovy@: the fixture test Groovy class for this specification.
 
-File are written to the migrations folder, so specify the filename relative to the migrations folder (@grails-app/migrations@ by default).
+If the @geb@ option is specified, then the script generate a simple sample for a web specification 
+based on the Geb framework (a browser automation solution for the Groovy language). 
+You may prefer this option when you want to write specs about your web interfaces.
+
+If the specification name specified already exists in your project, 
+then the script will prompt yoy if you want to overwrite the specification's files or not.
 
 Usage:
 {code:java}
-grails [environment] dbm-diff [otherEnv] [filename] --defaultSchema=[defaultSchema] --add
+grails create-concordion-test [--geb] specificationName
 {code}
 
 Required arguments:
 
-* @otherEnv@ - The name of the environment to compare to
+* @specificationName@ - The name of the specification to create (you can also specify a package name)
 
 Optional arguments:
 
-* @filename@ - The path to the output file to write to. If not specified output is written to the console
-* @defaultSchema@ - The default schema name to use
-* @add@ - if specified add an include in the root changelog file referencing the new file
+* @geb@ - if specified the sample specification generated will be a Geb-based one.
 
 {note}
-Note that the @defaultSchema@ parameter name and value must be quoted if executed in Windows, e.g.
+Note that to run Geb-based specifications you have to declared the following test dependencies
+in the project's @BuildConfig.groovy@:
 {code}
-grails dbm-diff "--defaultSchema=[defaultSchema]"
+    dependencies {
+        ...
+	test("org.codehaus.geb:geb-core:latest.release")
+	test("org.seleniumhq.selenium:selenium-firefox-driver:2.0a7")
+    }
 {code}
 {note}

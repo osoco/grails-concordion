@@ -78,10 +78,7 @@ class ConcordionGrailsTestType extends JUnit4GrailsTestType {
                 classPathAdditions << compiledClassesDir
             }
             classPathAdditions << buildBinding.pluginClassesDir
-            println "classPathAdditions: ${classPathAdditions}"
             testClassLoader = new URLClassLoader(classPathAdditions*.toURI()*.toURL() as URL[], buildBinding.classLoader)
-            println "classLoader URLs: ${testClassLoader.URLs}"
-            println "parent classLoader URLs: ${buildBinding.classLoader.URLs}"
         }
         testClassLoader
     }
