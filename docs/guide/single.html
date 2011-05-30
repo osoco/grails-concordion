@@ -70,7 +70,7 @@ by the concordion-extensions project, the plugin includes configurable factories
 (<code>es.osoco.grails.plugins.concordion.extensions.ConfigurableLoggingTooltipExtensionFactory</code> 
 and <code>es.osoco.grails.plugins.concordion.extensions.CongigurableScreenshotExtensionFactory</code>) to avoid
 you have to implement your own factories and can configure the extensions through a simple DSL in
-<code>BuildConfig</code>. For example:<p class="paragraph"/><div class="code"><pre>concordion.extensionFactories = &#91; 
+<code>BuildConfig</code>. For example:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> java.util.logging.Level<p class="paragraph"/>concordion.extensionFactories = &#91; 
   <span class="java&#45;quote">"es.osoco.grails.plugins.concordion.extensions.ConfigurableScreenshotExtensionFactory"</span>,
   <span class="java&#45;quote">"es.osoco.grails.plugins.concordion.extensions.ConfigurableLoggingTooltipExtensionFactory"</span> &#93;<p class="paragraph"/>concordion.screenshotExtensionFactoryConfiguration = &#123;
   screenshotOnThrowable <span class="java&#45;keyword">true</span>
@@ -80,8 +80,17 @@ you have to implement your own factories and can configure the extensions throug
   loggers <span class="java&#45;quote">"org.example.pomodoro.pages, selenium.events"</span>
   level Level.FINE
   showConsoleLogging <span class="java&#45;keyword">true</span>
-&#125;</pre></div><p class="paragraph"/>The following table shows the configuration options available to configure the <code>ConfigurableScreenshotExtensionFactory</code>:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Option</strong></th><th><strong class="bold">Default value</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>screenshotOnAssertionFailure</td><td><code>true</code></td><td>Sets whether screenshots will be embedded in the output when assertions fail.</td></tr><tr class="table-even"><td>screenshotOnAssertionSuccess</td><td><code>false</code></td><td>Sets whether screenshots will be embedded in the output when assertions pass.</td></tr><tr class="table-odd"><td>screenshotOnThrowable</td><td><code>true</code></td><td>Sets whether screenshots will be embedded in the output when uncaught Throwables occur in the test.</td></tr><tr class="table-even"><td>maxWidth</td><td>Any</td><td>Sets the maximum width that will be used for display of the images in the output.</td></tr><tr class="table-odd"><td>screenshotTaker</td><td>Take a shot of the full visible screen.</td><td>Set a custom screenshot taker.</td></tr></table><p class="paragraph"/>
-The following table shows the configuration options available to configure the <code>ConfigurableLoggingTooltipExtensionFactory</code>:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Option</strong></th><th><strong class="bold">Default value</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>loggers</td><td>Empty string (indicates the root logger).</td><td>A comma separated list of the names of loggers whose output is to be shown in the Concordion output.</td></tr><tr class="table-even"><td>level</td><td><code>Level.INFO</code></td><td>the logging <code>java.util.logging.Level</code> for the handler that writes to the Concordion output. Log messages of this level and higher will be output.</td></tr><tr class="table-odd"><td>showConsoleLogging</td><td><code>false</code></td><td><code>false</code> to remove console output for the root logger, <code>true</code> to show the console output.</td></tr></table><p class="paragraph"/><p class="paragraph"/><h1><a name="3 Tutorials">3 Tutorials</a></h1><h2><a name="3.1 Web-based Specifications Quickstart">3.1 Web-based Specifications Quickstart</a></h2>This quickstart shows how to use the Concordion plugin to write specifications 
+&#125;</pre></div><p class="paragraph"/>The following table shows the configuration options available to configure the <code>ConfigurableScreenshotExtensionFactory</code>:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Option</strong></th><th><strong class="bold">Default value</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>screenshotOnAssertionFailure</td><td><code>true</code></td><td>Sets whether screenshots will be embedded in the output when assertions fail.</td></tr><tr class="table-even"><td>screenshotOnAssertionSuccess</td><td><code>false</code></td><td>Sets whether screenshots will be embedded in the output when assertions pass.</td></tr><tr class="table-odd"><td>screenshotOnThrowable</td><td><code>true</code></td><td>Sets whether screenshots will be embedded in the output when uncaught Throwables occur in the test.</td></tr><tr class="table-even"><td>maxWidth</td><td>Any</td><td>Sets the maximum width that will be used for display of the images in the output.</td></tr><tr class="table-odd"><td>screenshotTaker</td><td>By default use <code>org.concordion.ext.screenshot.RobotScreenshotTaker</code> which will take a shot of the full visible screen.</td><td>Set a custom screenshot taker.</td></tr></table><p class="paragraph"/><blockquote class="note">
+The plugin also includes an option to easily use <code>org.concordion.ext.selenium.SeleniumScreenshotTaker</code>, 
+a custom <code>ScreenshotTaker</code> implementation that "ensures that only the browser window is captured, that the full browser page is captured and that it is captured regardless of whether the browser window is currently displayed".<p class="paragraph"/>For the moment, this configuration option is a bit tricky: <code>ConfigurableScreenshotExtensionFactory</code> assumes
+that if a value for its <code>webDriver</code> property has been set then it should configure the before mentioned <code>SeleniumScreenshotTaker</code>. In other words, to configure this custom screenshot taker you should add the <code>ConfigurableScreenshotExtensionFactory</code> to the <code>concordion.extensionFactories</code> list in your <code>BuildConfig.groovy</code>:<p class="paragraph"/><div class="code"><pre>concordion.extensionFactories = &#91; <span class="java&#45;quote">"es.osoco.grails.plugins.concordion.extensions.ConfigurableScreenshotExtensionFactory"</span> &#93;</pre></div><p class="paragraph"/>And add an initialization method annotated with @BeforeClass to your test classes setting the ConfigurableScreenshotExtensionFactory's webDriver, as in the following example:<p class="paragraph"/><div class="code"><pre><span class="java&#45;keyword">import</span> es.osoco.grails.plugins.concordion.extensions.ConfigurableScreenshotExtensionFactory<p class="paragraph"/><span class="java&#45;keyword">import</span> org.openqa.selenium.WebDriver
+<span class="java&#45;keyword">import</span> org.openqa.selenium.firefox.FirefoxDriver<p class="paragraph"/><span class="java&#45;keyword">import</span> org.junit.BeforeClass<p class="paragraph"/><span class="java&#45;keyword">public</span> class YourConcordionTest &#123;<p class="paragraph"/>  WebDriver webDriver<p class="paragraph"/>  @BeforeClass
+  <span class="java&#45;keyword">public</span> <span class="java&#45;keyword">static</span> void setup() &#123;
+    webDriver = <span class="java&#45;keyword">new</span> FirefoxDriver()
+    ConfigurableScreenshotExtensionFactory.webDriver = webDriver
+  &#125;<p class="paragraph"/>  ...<p class="paragraph"/>&#125;</pre></div>
+</blockquote><p class="paragraph"/>
+The following table shows the configuration options available to configure the <code>ConfigurableLoggingTooltipExtensionFactory</code>:<p class="paragraph"/><table class="wiki-table" cellpadding="0" cellspacing="0" border="0"><tr><th><strong class="bold">Option</strong></th><th><strong class="bold">Default value</strong></th><th><strong class="bold">Meaning</strong></th></tr><tr class="table-odd"><td>loggers</td><td>Empty string (indicates the root logger).</td><td>A comma separated list of the names of loggers whose output is to be shown in the Concordion output.</td></tr><tr class="table-even"><td>level</td><td><code>Level.INFO</code></td><td>the logging <code>java.util.logging.Level</code> for the handler that writes to the Concordion output. Log messages of this level and higher will be output. Note that you need to import the <code>java.util.logging.Level</code> class in your <code>BuildConfig.groovy</code> to use this option.</td></tr><tr class="table-odd"><td>showConsoleLogging</td><td><code>false</code></td><td><code>false</code> to remove console output for the root logger, <code>true</code> to show the console output.</td></tr></table><p class="paragraph"/><p class="paragraph"/><h1><a name="3 Tutorials">3 Tutorials</a></h1><h2><a name="3.1 Web-based Specifications Quickstart">3.1 Web-based Specifications Quickstart</a></h2>This quickstart shows how to use the Concordion plugin to write specifications 
 that test the web behaviour of a Grails application using <a href="http://geb.codehaus.org/latest/index.html" target="blank">Geb</a>.<p class="paragraph"/><h4>Step 1: Create a sample Grails project</h4><p class="paragraph"/><div class="code"><pre>grails create&#45;app concordion&#45;quickstart</pre></div><p class="paragraph"/><h4>Step 2: Install the Concordion plugin</h4><p class="paragraph"/><div class="code"><pre>cd concordion&#45;quickstart
 grails install&#45;plugin concordion</pre></div><p class="paragraph"/><h4>Step 3: Create an specification template</h4><p class="paragraph"/>Execute the <code>create-concordion-test</code> command with the <code>geb</code> argument:<p class="paragraph"/><div class="code"><pre>grails create&#45;concordion&#45;test &#45;web es.osoco.concordion.quickstart.Hello</pre></div><p class="paragraph"/>Running this will create in the <code>test/concordion/es/osoco/concordion/quickstart</code> 
 directory a Geb-based specification we can use as starting point, consisting in the
@@ -93,7 +102,7 @@ to the following Concordion specification:<p class="paragraph"/><div class="code
 &#60;/head&#62;
 &#60;body&#62;<p class="paragraph"/>    &#60;h1&#62;Hello Specification&#60;/h1&#62;<p class="paragraph"/>    &#60;h2&#62;Greeting message&#60;/h2&#62;<p class="paragraph"/>    &#60;p&#62;
       The application's  URL /hello should response with a greeting message with the
-      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span> inside an H1 header element, where username is the value 
+      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span>, where username is the value 
       of the name parameter passed.
     &#60;/p&#62;<p class="paragraph"/>    &#60;p&#62;
       When the name parameter is missing, the application should respond with a simple <span class="java&#45;quote">"Hi!"</span>.
@@ -101,14 +110,14 @@ to the following Concordion specification:<p class="paragraph"/><div class="code
       &#60;h3&#62;Existing name example&#60;/h3&#62;
       &#60;p&#62;
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message <span class="java&#45;quote">"Hi Groovy!"</span>
+        then the resulting page shows the message <span class="java&#45;quote">"Hi Groovy!"</span>
         when the name parameter passed is <span class="java&#45;quote">"Groovy"</span>.
       &#60;/p&#62;
     &#60;/div&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
       &#60;h3&#62;Missing name example&#60;/h3&#62;
       &#60;p&#62;
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message  <span class="java&#45;quote">"Hi !"</span>
+        then the resulting page shows the message  <span class="java&#45;quote">"Hi !"</span>
         when the name parameter is not passed.
       &#60;/p&#62;
     &#60;/div&#62;<p class="paragraph"/>&#60;/body&#62;
@@ -119,7 +128,7 @@ and validate them with your client before you start with the instrumentation and
 &#60;/head&#62;
 &#60;body&#62;<p class="paragraph"/>    &#60;h1&#62;Hello Specification&#60;/h1&#62;<p class="paragraph"/>    &#60;h2&#62;Greeting message&#60;/h2&#62;<p class="paragraph"/>    &#60;p&#62;
       The application's  URL /hello should response with a greeting message with the
-      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span> inside an H1 header element, where username is the value 
+      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span>, where username is the value 
       of the name parameter passed.
     &#60;/p&#62;<p class="paragraph"/>    &#60;p&#62;
       When the name parameter is missing, the application should respond with a simple <span class="java&#45;quote">"Hi!"</span>.
@@ -127,7 +136,7 @@ and validate them with your client before you start with the instrumentation and
       &#60;h3&#62;Existing name example&#60;/h3&#62;
       &#60;p concordion:execute=<span class="java&#45;quote">"&#35;h1Message = h1MessageForName(&#35;name)"</span>&#62;
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message 
+        then the resulting page shows the message 
         <span class="java&#45;quote">"&#60;span concordion:assertEquals="</span>&#35;h1Message<span class="java&#45;quote">"&#62;Hi Groovy!&#60;/span&#62;"</span>
         when the name parameter passed is <span class="java&#45;quote">"&#60;span concordion:set="</span>&#35;name<span class="java&#45;quote">"&#62;Groovy&#60;/span&#62;"</span>.
       &#60;/p&#62;
@@ -135,7 +144,7 @@ and validate them with your client before you start with the instrumentation and
       &#60;h3&#62;Missing name example&#60;/h3&#62;
       &#60;p concordion:execute=<span class="java&#45;quote">"&#35;h1Message = h1MessageForName(&#35;name)"</span>&#62;
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message  
+        then the resulting page shows the message  
         <span class="java&#45;quote">"&#60;span concordion:assertEquals="</span>&#35;h1Message<span class="java&#45;quote">"&#62;Hi !&#60;/span&#62;"</span>
         when the name parameter is not passed&#60;span concordion:set=<span class="java&#45;quote">"&#35;name"</span>&#62;&#60;/span&#62;.
       &#60;/p&#62;

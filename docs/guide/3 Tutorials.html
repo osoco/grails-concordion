@@ -17,7 +17,7 @@ to the following Concordion specification:<p class="paragraph"/><div class="code
 &#60;/head&#62;
 &#60;body&#62;<p class="paragraph"/>    &#60;h1&#62;Hello Specification&#60;/h1&#62;<p class="paragraph"/>    &#60;h2&#62;Greeting message&#60;/h2&#62;<p class="paragraph"/>    &#60;p&#62;
       The application's  URL /hello should response with a greeting message with the
-      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span> inside an H1 header element, where username is the value 
+      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span>, where username is the value 
       of the name parameter passed.
     &#60;/p&#62;<p class="paragraph"/>    &#60;p&#62;
       When the name parameter is missing, the application should respond with a simple <span class="java&#45;quote">"Hi!"</span>.
@@ -25,14 +25,14 @@ to the following Concordion specification:<p class="paragraph"/><div class="code
       &#60;h3&#62;Existing name example&#60;/h3&#62;
       &#60;p&#62;
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message <span class="java&#45;quote">"Hi Groovy!"</span>
+        then the resulting page shows the message <span class="java&#45;quote">"Hi Groovy!"</span>
         when the name parameter passed is <span class="java&#45;quote">"Groovy"</span>.
       &#60;/p&#62;
     &#60;/div&#62;<p class="paragraph"/>    &#60;div class=<span class="java&#45;quote">"example"</span>&#62;
       &#60;h3&#62;Missing name example&#60;/h3&#62;
       &#60;p&#62;
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message  <span class="java&#45;quote">"Hi !"</span>
+        then the resulting page shows the message  <span class="java&#45;quote">"Hi !"</span>
         when the name parameter is not passed.
       &#60;/p&#62;
     &#60;/div&#62;<p class="paragraph"/>&#60;/body&#62;
@@ -43,7 +43,7 @@ and validate them with your client before you start with the instrumentation and
 &#60;/head&#62;
 &#60;body&#62;<p class="paragraph"/>    &#60;h1&#62;Hello Specification&#60;/h1&#62;<p class="paragraph"/>    &#60;h2&#62;Greeting message&#60;/h2&#62;<p class="paragraph"/>    &#60;p&#62;
       The application's  URL /hello should response with a greeting message with the
-      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span> inside an H1 header element, where username is the value 
+      following form: <span class="java&#45;quote">"Hi &#91;username&#93;!"</span>, where username is the value 
       of the name parameter passed.
     &#60;/p&#62;<p class="paragraph"/>    &#60;p&#62;
       When the name parameter is missing, the application should respond with a simple <span class="java&#45;quote">"Hi!"</span>.
@@ -51,7 +51,7 @@ and validate them with your client before you start with the instrumentation and
       &#60;h3&#62;Existing name example&#60;/h3&#62;
       &#60;p concordion:execute=<span class="java&#45;quote">"&#35;h1Message = h1MessageForName(&#35;name)"</span>&#62;
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message 
+        then the resulting page shows the message 
         <span class="java&#45;quote">"&#60;span concordion:assertEquals="</span>&#35;h1Message<span class="java&#45;quote">"&#62;Hi Groovy!&#60;/span&#62;"</span>
         when the name parameter passed is <span class="java&#45;quote">"&#60;span concordion:set="</span>&#35;name<span class="java&#45;quote">"&#62;Groovy&#60;/span&#62;"</span>.
       &#60;/p&#62;
@@ -59,7 +59,7 @@ and validate them with your client before you start with the instrumentation and
       &#60;h3&#62;Missing name example&#60;/h3&#62;
       &#60;p concordion:execute=<span class="java&#45;quote">"&#35;h1Message = h1MessageForName(&#35;name)"</span>&#62;
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message  
+        then the resulting page shows the message  
         <span class="java&#45;quote">"&#60;span concordion:assertEquals="</span>&#35;h1Message<span class="java&#45;quote">"&#62;Hi !&#60;/span&#62;"</span>
         when the name parameter is not passed&#60;span concordion:set=<span class="java&#45;quote">"&#35;name"</span>&#62;&#60;/span&#62;.
       &#60;/p&#62;
