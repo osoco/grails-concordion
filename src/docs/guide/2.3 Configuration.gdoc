@@ -26,6 +26,8 @@ you have to implement your own factories and can configure the extensions throug
 @BuildConfig@. For example:
 
 {code}
+import java.util.logging.Level
+
 concordion.extensionFactories = [ 
   "es.osoco.grails.plugins.concordion.extensions.ConfigurableScreenshotExtensionFactory",
   "es.osoco.grails.plugins.concordion.extensions.ConfigurableLoggingTooltipExtensionFactory" ]
@@ -51,8 +53,45 @@ screenshotOnAssertionFailure | @true@ | Sets whether screenshots will be embedde
 screenshotOnAssertionSuccess | @false@ | Sets whether screenshots will be embedded in the output when assertions pass.
 screenshotOnThrowable | @true@ | Sets whether screenshots will be embedded in the output when uncaught Throwables occur in the test.
 maxWidth | Any | Sets the maximum width that will be used for display of the images in the output.
-screenshotTaker | Take a shot of the full visible screen.  | Set a custom screenshot taker.
+screenshotTaker | By default use @org.concordion.ext.screenshot.RobotScreenshotTaker@ which will take a shot of the full visible screen.  | Set a custom screenshot taker.
 {table}
+
+{note}
+The plugin also includes an option to easily use @org.concordion.ext.selenium.SeleniumScreenshotTaker@, 
+a custom @ScreenshotTaker@ implementation that "ensures that only the browser window is captured, that the full browser page is captured and that it is captured regardless of whether the browser window is currently displayed".
+
+For the moment, this configuration option is a bit tricky: @ConfigurableScreenshotExtensionFactory@ assumes
+that if a value for its @webDriver@ property has been set then it should configure the before mentioned @SeleniumScreenshotTaker@. In other words, to configure this custom screenshot taker you should add the @ConfigurableScreenshotExtensionFactory@ to the @concordion.extensionFactories@ list in your @BuildConfig.groovy@:
+
+{code}
+concordion.extensionFactories = [ "es.osoco.grails.plugins.concordion.extensions.ConfigurableScreenshotExtensionFactory" ]
+{code}
+
+And add an initialization method annotated with @BeforeClass to your test classes setting the ConfigurableScreenshotExtensionFactory's webDriver, as in the following example:
+
+{code}
+import es.osoco.grails.plugins.concordion.extensions.ConfigurableScreenshotExtensionFactory
+
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.firefox.FirefoxDriver
+
+import org.junit.BeforeClass
+
+public class YourConcordionTest {
+
+  WebDriver webDriver
+
+  @BeforeClass
+  public static void setup() {
+    webDriver = new FirefoxDriver()
+    ConfigurableScreenshotExtensionFactory.webDriver = webDriver
+  }
+
+  ...
+
+}
+{code}
+{note}
 
 
 The following table shows the configuration options available to configure the @ConfigurableLoggingTooltipExtensionFactory@:
@@ -60,7 +99,7 @@ The following table shows the configuration options available to configure the @
 {table}
 *Option* | *Default value* | *Meaning*
 loggers | Empty string (indicates the root logger). | A comma separated list of the names of loggers whose output is to be shown in the Concordion output.
-level | @Level.INFO@ | the logging @java.util.logging.Level@ for the handler that writes to the Concordion output. Log messages of this level and higher will be output.
+level | @Level.INFO@ | the logging @java.util.logging.Level@ for the handler that writes to the Concordion output. Log messages of this level and higher will be output. Note that you need to import the @java.util.logging.Level@ class in your @BuildConfig.groovy@ to use this option.
 showConsoleLogging | @false@ | @false@ to remove console output for the root logger, @true@ to show the console output.
 {table}
 

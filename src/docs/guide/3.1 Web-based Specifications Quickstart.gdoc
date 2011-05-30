@@ -47,7 +47,7 @@ to the following Concordion specification:
 
     <p>
       The application's  URL /hello should response with a greeting message with the
-      following form: "Hi [username]!" inside an H1 header element, where username is the value 
+      following form: "Hi [username]!", where username is the value 
       of the name parameter passed.
     </p>
 
@@ -59,7 +59,7 @@ to the following Concordion specification:
       <h3>Existing name example</h3>
       <p>
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message "Hi Groovy!"
+        then the resulting page shows the message "Hi Groovy!"
         when the name parameter passed is "Groovy".
       </p>
     </div>
@@ -68,7 +68,7 @@ to the following Concordion specification:
       <h3>Missing name example</h3>
       <p>
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message  "Hi !"
+        then the resulting page shows the message  "Hi !"
         when the name parameter is not passed.
       </p>
     </div>
@@ -99,7 +99,7 @@ Now we instrument the previous specification through Concordion specific attribu
 
     <p>
       The application's  URL /hello should response with a greeting message with the
-      following form: "Hi [username]!" inside an H1 header element, where username is the value 
+      following form: "Hi [username]!", where username is the value 
       of the name parameter passed.
     </p>
 
@@ -111,7 +111,7 @@ Now we instrument the previous specification through Concordion specific attribu
       <h3>Existing name example</h3>
       <p concordion:execute="#h1Message = h1MessageForName(#name)">
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message 
+        then the resulting page shows the message 
         "<span concordion:assertEquals="#h1Message">Hi Groovy!</span>"
         when the name parameter passed is "<span concordion:set="#name">Groovy</span>".
       </p>
@@ -121,7 +121,7 @@ Now we instrument the previous specification through Concordion specific attribu
       <h3>Missing name example</h3>
       <p concordion:execute="#h1Message = h1MessageForName(#name)">
         Given the /hello page is requested
-        then the resulting page shows an H1 header with the message  
+        then the resulting page shows the message  
         "<span concordion:assertEquals="#h1Message">Hi !</span>"
         when the name parameter is not passed<span concordion:set="#name"></span>.
       </p>
