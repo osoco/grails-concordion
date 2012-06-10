@@ -49,11 +49,12 @@ concordionTestPhaseCleanUp = {
 
 tryToLoadConcordionTestType = {
     def testMode = new GrailsTestMode(autowire: true)
-    tryToLoadTestType(
-        'concordion', 
-        'concordion', 
-        'es.osoco.grails.plugins.concordion.ConcordionGrailsTestType',
-        testMode)
+	def typeClass = softLoadClass('es.osoco.grails.plugins.concordion.ConcordionGrailsTestType')
+	if (typeClass) {
+		concordionTests << typeClass.newInstance('concordion', 
+										        'concordion', 
+										        testMode)
+	}
 }
 
 tryToLoadTestType = { name, directory, typeClassName, testMode ->	
