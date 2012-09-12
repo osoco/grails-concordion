@@ -21,7 +21,6 @@
  * limitations under the License.
  */
 
-
 /**
  * A plugin that integrates the Concordion acceptance testing framework into
  * a Grails application.
@@ -30,7 +29,7 @@
  */
 class ConcordionGrailsPlugin {
     // the plugin version
-    def version = "0.1.1"
+    def version = "0.1.2"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.3 > *"
     // resources that are excluded from plugin packaging
@@ -40,7 +39,11 @@ class ConcordionGrailsPlugin {
 
     def author = "OSOCO"
     def authorEmail = "rafael.luque@osoco.es"
+    def organization = [name: "OSOCO", url: "http://www.osoco.es/"]
     def title = "Grails Concordion Plugin"
     def description = "Grails Concordion Plugin"
+    def license = "APACHE"
     def documentation = "http://grails.org/plugin/concordion"
+    def issueManagement = [system: "GitHub", url: "https://github.com/osoco/grails-concordion/issues"]
+    def scm = [url: "https://github.com/osoco/grails-concordion/"]
 }

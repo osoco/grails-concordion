@@ -49,21 +49,13 @@ concordionTestPhaseCleanUp = {
 
 tryToLoadConcordionTestType = {
     def testMode = new GrailsTestMode(autowire: true)
-    tryToLoadTestType(
-        'concordion', 
-        'concordion', 
-        'es.osoco.grails.plugins.concordion.ConcordionGrailsTestType',
-        testMode)
-}
-
-tryToLoadTestType = { name, directory, typeClassName, testMode ->	
-    def typeClass = softLoadClass(typeClassName)
+    def typeClass = safeLoadClass('es.osoco.grails.plugins.concordion.ConcordionGrailsTestType')
     if (typeClass) {
-        concordionTests << typeClass.newInstance(name, directory, testMode)
+        concordionTests << typeClass.newInstance('concordion', 'concordion', testMode)
     }
 }
 
-softLoadClass = { className ->
+safeLoadClass = { className ->
     try {
         classLoader.loadClass(className)
     } catch (ClassNotFoundException e) {
@@ -104,7 +96,7 @@ buildConcordionExtensions = {
 configureExtensions = {
     extensionClasses ->
     extensionClasses.each {
-        def extensionClass = softLoadClass(it)
+        def extensionClass = safeLoadClass(it)
         def isConfigurableExtensionFactory = 
             (extensionClass.superclass.name == "es.osoco.grails.plugins.concordion.extensions.ConfigurableExtensionFactory")
         if (isConfigurableExtensionFactory) {
