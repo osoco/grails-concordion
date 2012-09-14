@@ -41,6 +41,9 @@ class ConcordionGrailsPlugin {
     def authorEmail = "rafael.luque@osoco.es"
     def organization = [name: "OSOCO", url: "http://www.osoco.es/"]
     def title = "Grails Concordion Plugin"
+    def developers = [
+        [ name: "Rafael Luque", email: "rafael.luque@osoco.es" ],
+        [ name: "Marcin Gryszko", email: "marcin.gryszko@osoco.es" ] ]
     def description = "Grails Concordion Plugin"
     def license = "APACHE"
     def documentation = "http://grails.org/plugin/concordion"
